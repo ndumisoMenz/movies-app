@@ -25,7 +25,7 @@ const Search = () => {
 
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="w-full max-w-lg bg-green-700 rounded-xl p-4 flex flex-col min-h-[320px] overflow-y-auto">
+          <div className="w-full max-w-lg  bg-green-700 rounded-xl p-4 flex flex-col min-h-[320px] overflow-y-auto">
             
             <div className="flex justify-between items-center mb-2">
               <FiSearch className="mx-1 text-white" />

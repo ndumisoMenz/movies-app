@@ -1,4 +1,6 @@
 import { useState,useEffect } from "react"
+import { IoMdStar } from "react-icons/io";
+import { CiCalendarDate } from "react-icons/ci";
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w780";
 
@@ -32,22 +34,57 @@ const LandingSlide = ({movies}) => {
 
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white">
 
-        <div className="relative w-[800px] h-[450px] overflow-hidden rounded-2xl shadow-lg">
+<div
+  className=" flex items-end w-full h-full relative transition-all duration-700 z-0">
+  {/* style={{
+    backgroundImage: `url(${imageUrl})`,
+    backgroundSize: "cover",     
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+  }}
+> */}
+<img
+    src={imageUrl}
+    alt={currentMovie.title}
+    className="absolute inset-0 w-full h-full object-cover -z-10"
+  />
 
-        <img
-          src={imageUrl}
-          alt={currentMovie.title}
-          className="w-full h-full object-cover transition-all duration-700"
-        />
-        <div className="absolute bottom-0 w-full bg-black/60 text-center py-3">
-          <h2 className="text-xl md:text-2xl font-bold">{currentMovie.title}</h2>
+
+
+  <div className="w-full md:w-[480px] lg:w-[640px] ml-4 mb-2">
+      <h1 className="text-3xl font-bold">{currentMovie.title}</h1>
+
+      <div className="flex items-center gap-4 mt-2 text-gray-700">
+        <div className="flex items-center gap-1">
+          <IoMdStar className="text-yellow-500" />
+          <span>{currentMovie.vote_average}</span>
         </div>
 
+        <div className="flex items-center gap-1">
+          <CiCalendarDate />
+          <span>{currentMovie.release_date}</span>
         </div>
-      
+
+        <span className="px-2 py-0.5 bg-neutral-200 rounded-md text-sm">
+          {currentMovie.language}
+        </span>
+
+        <span className="px-2 py-0.5 bg-neutral-200 rounded-md text-sm">
+          {currentMovie.mpaaRating}
+        </span>
+      </div>
+      <p className="mt-3 text-neutral-900">{currentMovie.overview}</p>
+      <div className="flex items-center gap-3 mt-5">
+        <button className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium px-5 py-2 rounded-lg">
+          ▶ Play
+        </button>
+        <button className="flex items-center gap-1 px-4 py-2 border rounded-lg hover:bg-gray-100">
+          ➕ Add to List
+        </button>
+      </div>
     </div>
+</div>
   )
 }
 
