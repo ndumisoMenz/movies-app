@@ -1,11 +1,13 @@
-import { useState,useEffect } from "react"
+import { useState,useEffect, useContext } from "react"
 import { IoMdStar } from "react-icons/io";
 import { CiCalendarDate } from "react-icons/ci";
+import { ListContext } from "../context/ListContext";
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w780";
 
 const LandingSlide = ({movies}) => {
     const[currentIndex,setCurrentIndex]=useState(0)
+    const{addToList,myList,removeFromList}=useContext(ListContext)
 
     useEffect(()=>{
         if(!movies || movies.length===0) return
@@ -27,6 +29,7 @@ const LandingSlide = ({movies}) => {
     ? `${IMAGE_BASE_URL}${currentMovie.poster_path}`
     : "/placeholder.png";
 
+    const isInList=myList.some((m)=>m.id===currentMovie.id)
 
     // const imageUrl = currentMovie.backdrop_path
     // ? `${IMAGE_BASE_URL}${currentMovie.backdrop_path}`
@@ -79,8 +82,15 @@ const LandingSlide = ({movies}) => {
         <button className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium px-5 py-2 rounded-lg">
           ▶ Play
         </button>
-        <button className="flex items-center gap-1 px-4 py-2 border rounded-lg hover:bg-gray-100">
-          ➕ Add to List
+        <button className="flex items-center gap-1 px-4 py-2 border rounded-lg hover:bg-gray-100"
+          onClick={()=>isInList? removeFromList(currentMovie.id):addToList({
+            id:currentMovie.id,
+            title:currentMovie.title,
+            poster:imageUrl,
+            year:currentMovie.release_date?.split("-")[0],
+          })}
+        >
+         {isInList? "📎 remove":"➕ Add to List"} 
         </button>
       </div>
     </div>

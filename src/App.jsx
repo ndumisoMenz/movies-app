@@ -1,6 +1,8 @@
 import Home from "./components/Home"
+import Mylist from "./components/Mylist";
 import Search from "./components/Search"
 import React, { useState, useEffect } from "react";
+import {ListProvider} from "./context/ListContext";
 
 const API_KEY = import.meta.env.VITE_TMDB_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
@@ -79,9 +81,11 @@ function App() {
   }, []);
 
   return (
+    <ListProvider>
     <div className="bg-black">
     <Home movies={movies} trending={trending} theme={theme} setTheme={setTheme} topRated={topRated} />
     </div>
+    </ListProvider>
   )
 }
 

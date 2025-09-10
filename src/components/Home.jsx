@@ -1,6 +1,7 @@
 import LandingSlide from "./LandingSlide"
 import Navigation from "./Navigation"
 import ListGrid from "./ListGrid"
+import Mylist from "./Mylist"
 
 const Home = ({movies,trending,topRated,theme,setTheme}) => {
   return (
@@ -17,6 +18,8 @@ const Home = ({movies,trending,topRated,theme,setTheme}) => {
       <div className="px-6 mt-10">
         <ListGrid title="Top Rated Movies" movies={topRated} />
       </div>
+
+      <Mylist/>
   
     </div>
   )

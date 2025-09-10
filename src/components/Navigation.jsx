@@ -10,9 +10,20 @@ const Navigation = ({theme,setTheme}) => {
   const[toggleTheme,setToggleTheme]=useState(false)
   const[navcolor,setnavColor]=useState('bg-transparent');
 
+  useEffect(()=>{
+    const savedTheme=localStorage.getItem("theme")
+    if(savedTheme){
+      setTheme(savedTheme)
+      setToggleTheme(savedTheme==="dark")
+    }
+  },[theme])
+
   const handleToggle=()=>{
-    setToggleTheme(!toggleTheme)
-    theme==='light'? setTheme('dark'):setTheme('light')
+    const newTheme=theme==="light"? "dark":"light";
+    setTheme(newTheme)
+    setToggleTheme(newTheme==="dark")
+    localStorage.setItem("theme",newTheme)
+    //theme==='light'? setTheme('dark'):setTheme('light')
   }
 
   useEffect(()=>{
