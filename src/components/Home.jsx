@@ -2,8 +2,9 @@ import LandingSlide from "./LandingSlide"
 import Navigation from "./Navigation"
 import ListGrid from "./ListGrid"
 import Mylist from "./Mylist"
+import Movies from "./Movies";
 
-const Home = ({movies,trending,topRated,theme,setTheme}) => {
+const Home = ({allMovies,movies,trending,topRated,theme,setTheme}) => {
   return (
     <div className="w-screen h-[80vh] lg:h-[70vh] -mt-4">
       <Navigation theme={theme} setTheme={setTheme}/>
@@ -18,9 +19,9 @@ const Home = ({movies,trending,topRated,theme,setTheme}) => {
       <div className="px-6 mt-10">
         <ListGrid title="Top Rated Movies" movies={topRated} />
       </div>
-
+      
       <Mylist/>
-  
+      <Movies allMovies={allMovies}/>
     </div>
   )
 }

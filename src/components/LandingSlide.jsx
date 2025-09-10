@@ -2,6 +2,7 @@ import { useState,useEffect, useContext } from "react"
 import { IoMdStar } from "react-icons/io";
 import { CiCalendarDate } from "react-icons/ci";
 import { ListContext } from "../context/ListContext";
+import AddToListButton from "./AddToListButton";
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w780";
 
@@ -92,6 +93,7 @@ const LandingSlide = ({movies}) => {
         >
          {isInList? "📎 remove":"➕ Add to List"} 
         </button>
+        {/* <AddToListButton item={currentMovie}/> */}
       </div>
     </div>
 </div>

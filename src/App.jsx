@@ -4,6 +4,7 @@ import Search from "./components/Search"
 import React, { useState, useEffect } from "react";
 import {ListProvider} from "./context/ListContext";
 
+
 const API_KEY = import.meta.env.VITE_TMDB_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 
@@ -15,6 +16,7 @@ function App() {
   const [movies, setMovies] = useState([]);
   const[trending,setTrending]=useState([]);
   const[topRated,setTopRated]=useState([]);
+  const[allMovies,setAllMovies]=useState([]);
 
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
@@ -64,6 +66,31 @@ function App() {
     }
   }
 
+  async function fetchAllMovies(totalPages=10) {
+    setLoading(true);
+    try {
+      let allResults=[]
+      for(let page=1;page<=totalPages;page++){
+        const res = await fetch(
+        `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=${page}`
+      );
+      const data = await res.json();
+      if(data.results?.length){
+        allResults=[...allResults,...data.results];
+        }else{
+        break;
+      }
+    }
+
+      setAllMovies(allResults);
+      } catch (err) {
+      console.error("Error fetching all movies:", err);
+    } finally {
+      setLoading(false);
+    }
+    }
+    
+
   useEffect(()=>{
     if(theme==='dark'){
       document.body.style.backgroundColor="#000000"
@@ -78,12 +105,13 @@ function App() {
     fetchMovies("popular");
     fetchTrending();
     fetchTopRated();
+    fetchAllMovies();
   }, []);
 
   return (
     <ListProvider>
     <div className="bg-black">
-    <Home movies={movies} trending={trending} theme={theme} setTheme={setTheme} topRated={topRated} />
+    <Home allMovies={allMovies} movies={movies} trending={trending} theme={theme} setTheme={setTheme} topRated={topRated} />
     </div>
     </ListProvider>
   )
