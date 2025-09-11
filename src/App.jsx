@@ -1,8 +1,10 @@
+import { BrowserRouter as Router,Routes,Route } from "react-router-dom";
 import Home from "./components/Home"
 import Mylist from "./components/Mylist";
 import Search from "./components/Search"
 import React, { useState, useEffect } from "react";
 import {ListProvider} from "./context/ListContext";
+import MovieDetails from "./components/MovieDetails";
 
 
 const API_KEY = import.meta.env.VITE_TMDB_KEY;
@@ -66,7 +68,7 @@ function App() {
     }
   }
 
-  async function fetchAllMovies(totalPages=10) {
+  async function fetchAllMovies(totalPages=15) {
     setLoading(true);
     try {
       let allResults=[]
@@ -110,9 +112,17 @@ function App() {
 
   return (
     <ListProvider>
-    <div className="bg-black">
-    <Home allMovies={allMovies} movies={movies} trending={trending} theme={theme} setTheme={setTheme} topRated={topRated} />
-    </div>
+      <Router>
+        <div className="bg-black">
+          <Routes>
+            <Route path="/" element={
+              <Home allMovies={allMovies} movies={movies} trending={trending} theme={theme} setTheme={setTheme} topRated={topRated} />
+            }/>
+            <Route path="/movie/:id" element={<MovieDetails allMovies={allMovies}/>}/>
+          </Routes>
+            
+        </div>
+      </Router>
     </ListProvider>
   )
 }

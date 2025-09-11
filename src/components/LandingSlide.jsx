@@ -25,6 +25,7 @@ const LandingSlide = ({movies}) => {
     }
 
     const currentMovie = movies[currentIndex];
+    
 
     const imageUrl = currentMovie.poster_path
     ? `${IMAGE_BASE_URL}${currentMovie.poster_path}`
@@ -51,12 +52,13 @@ const LandingSlide = ({movies}) => {
 <img
     src={imageUrl}
     alt={currentMovie.title}
-    className="absolute inset-0 w-full h-full object-cover -z-10"
+    className="absolute inset-0 w-screen h-full cover -z-10"
+    
   />
 
 
 
-  <div className="w-full md:w-[480px] lg:w-[640px] ml-4 mb-2">
+  <div className="w-full md:w-[480px] lg:w-[640px] text-white ml-4 mb-2">
       <h1 className="text-3xl font-bold">{currentMovie.title}</h1>
 
       <div className="flex items-center gap-4 mt-2 text-gray-700">
@@ -78,12 +80,12 @@ const LandingSlide = ({movies}) => {
           {currentMovie.mpaaRating}
         </span>
       </div>
-      <p className="mt-3 text-neutral-900">{currentMovie.overview}</p>
+      <p className="mt-3">{currentMovie.overview}</p>
       <div className="flex items-center gap-3 mt-5">
         <button className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium px-5 py-2 rounded-lg">
           ▶ Play
         </button>
-        <button className="flex items-center gap-1 px-4 py-2 border rounded-lg hover:bg-gray-100"
+        {/* <button className="flex items-center gap-1 px-4 py-2 border rounded-lg hover:bg-gray-100"
           onClick={()=>isInList? removeFromList(currentMovie.id):addToList({
             id:currentMovie.id,
             title:currentMovie.title,
@@ -92,8 +94,8 @@ const LandingSlide = ({movies}) => {
           })}
         >
          {isInList? "📎 remove":"➕ Add to List"} 
-        </button>
-        {/* <AddToListButton item={currentMovie}/> */}
+        </button> */}
+        <AddToListButton item={currentMovie}/>
       </div>
     </div>
 </div>

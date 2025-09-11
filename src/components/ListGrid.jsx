@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 
 const IMG_BASE_URL = "https://image.tmdb.org/t/p/w500";
@@ -39,6 +40,7 @@ const ListGrid = ({title, movies }) => {
 
       >
         {movies.map((movie) => (
+          <Link key={movie.id} to={`/movie/${movie.id}`}>
           <div
             key={movie.id}
             className="flex-shrink-0 w-40 bg-white rounded-xl shadow-md hover:shadow-lg cursor-pointer overflow-hidden"
@@ -59,6 +61,7 @@ const ListGrid = ({title, movies }) => {
               </p>
             </div>
           </div>
+          </Link>
         ))}
       </div>
 
