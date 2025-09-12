@@ -9,10 +9,10 @@ const AddToListButton = ({ item }) => {
   const isInList = myList.some((m) => m.id === item.id);
 
   const getPosterUrl = () => {
-    if (item.poster) return item.poster; // already a full url
-    if (item.poster_path) return `${IMG_BASE_URL}${item.poster_path}`;
-    if (item.backdrop_path) return `${IMG_BASE_URL}${item.backdrop_path}`;
-    return "/placeholder.png"; // fallback
+    if (item.poster) return item.poster; 
+    if (item.poster_path) return `${IMAGE_BASE_URL}${item.poster_path}`;
+    if (item.backdrop_path) return `${IMAGE_BASE_URL}${item.backdrop_path}`;
+    return "/placeholder.png";
   };
 
   return (
@@ -23,10 +23,10 @@ const AddToListButton = ({ item }) => {
           ? removeFromList(item.id)
           : addToList({
               id: item.id,
-              title: item.title || item.name, // TMDB uses 'name' for series
+              title: item.title || item.name,
               poster: getPosterUrl(),
               year: item.release_date?.split("-")[0] || item.first_air_date?.split("-")[0],
-              type: item.media_type || (item.first_air_date ? "tv" : "movie"), // auto detect
+              type: item.media_type || (item.first_air_date ? "tv" : "movie"),
             })
       }
     >

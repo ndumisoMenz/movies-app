@@ -3,20 +3,23 @@ import { createContext, useState, useEffect } from "react";
 export const ListContext = createContext();
 
 export const ListProvider = ({ children }) => {
-  const [myList, setMyList] = useState([]);
+  const [myList, setMyList] = useState(()=>{
+    const storedList=localStorage.getItem("myList")
+    return storedList? JSON.parse(storedList):[];
+  });
 
-  // Load saved list from localStorage
+
   useEffect(() => {
     const storedList = JSON.parse(localStorage.getItem("myList")) || [];
     setMyList(storedList);
   }, []);
 
-  // Save list to localStorage whenever it changes
+
   useEffect(() => {
     localStorage.setItem("myList", JSON.stringify(myList));
   }, [myList]);
 
-  const addToList = (movie) => {
+  const addToList = (item) => {
     setMyList((prev) => {
       if (prev.find((m) => m.id === movie.id)) return prev; // prevent duplicates
       return [...prev, movie];

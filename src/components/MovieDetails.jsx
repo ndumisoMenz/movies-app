@@ -23,7 +23,7 @@ const MovieDetails = () => {
                 setMovie(data)
 
                 const creditsRes=await fetch(
-                    `${BASE_URL}/movie/${id}/credit?api_key=${API_KEY}&language=en-US`
+                    `${BASE_URL}/movie/${id}/credits?api_key=${API_KEY}&language=en-US`
                 );
                 const creditsData=await creditsRes.json();
                 setCredits(creditsData.cast ||[])
@@ -50,8 +50,6 @@ const MovieDetails = () => {
         className="w-full h-[90vh] object-cover" 
         />
     <div className="w-screen min-h-screen bg-white text-black p-8">
-      
-    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black"/>
 
         <div className="flex flex-col md:flex-row gap-10">
             <img 

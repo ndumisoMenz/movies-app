@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const IMG_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
-const ListGrid = ({title, movies }) => {
+const ListGrid = ({title, movies,type = "movie" }) => {
   const scrollRef = useRef(null);
 
   const scroll = (direction) => {
@@ -39,25 +39,29 @@ const ListGrid = ({title, movies }) => {
         }}
 
       >
-        {movies.map((movie) => (
-          <Link key={movie.id} to={`/movie/${movie.id}`}>
+        {movies.map((item) => (
+          <Link key={item.id} to={`/${type}/${item.id}`}>
           <div
-            key={movie.id}
+            key={item.id}
             className="flex-shrink-0 w-40 bg-white rounded-xl shadow-md hover:shadow-lg cursor-pointer overflow-hidden"
           >
             <img
               src={
-                movie.poster_path
-                  ? `${IMG_BASE_URL}${movie.poster_path}`
+                item.poster_path
+                  ? `${IMG_BASE_URL}${item.poster_path}`
                   : "https://via.placeholder.com/500x750?text=No+Image"
               }
-              alt={movie.title}
+              alt={item.title || item.name}
               className="w-full h-60 object-cover"
             />
             <div className="p-2">
-              <h3 className="font-semibold text-sm truncate">{movie.title}</h3>
+              <h3 className="font-semibold text-sm truncate">{item.title || item.name}</h3>
               <p className="text-gray-500 text-xs">
-                Movie • {movie.release_date ? movie.release_date.slice(0, 4) : "N/A"}
+                {/* Movie • {movie.release_date ? item.release_date.slice(0, 4) : "N/A"} */}
+                {type === "movie"
+                    ? `Movie • ${item.release_date ? item.release_date.slice(0, 4) : "N/A"}`
+                    : `TV • ${item.first_air_date ? item.first_air_date.slice(0, 4) : "N/A"}`}
+
               </p>
             </div>
           </div>

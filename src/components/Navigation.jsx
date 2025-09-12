@@ -4,6 +4,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { MdMovieFilter } from "react-icons/md";
 import Search from "./Search";
+import { Link } from "react-router-dom";
 
 const Navigation = ({theme,setTheme}) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,7 +45,7 @@ const Navigation = ({theme,setTheme}) => {
 
 
   return (
-    <nav className={`flex flex-row ${navcolor} justify-center md:justify-between  w-screen mt-2 fixed z-20 opacity-80 py-4 px-7`}>
+    <nav className={`flex flex-row ${navcolor} justify-center md:justify-between  w-screen fixed z-20 opacity-80 py-4 px-7`}>
 
       {isOpen && (
         <div
@@ -69,24 +70,24 @@ const Navigation = ({theme,setTheme}) => {
   </div>
 
   <ul className="flex flex-col">
-    <li className="flex font-bold"><MdMovieFilter />Movies App</li>
-    <li><a href='#'>Home</a></li>
-    <li><a href="#">Movies</a></li>
-    <li><a href="#">TV Shows</a></li>
-    <li><a href="#">Anime</a></li>
-    <li><a href="#">My List</a></li>
-    <li><a href="#">Disclaimer</a></li>
+    <li className="flex font-bold"><MdMovieFilter />Movie App</li>
+    <li><Link to="/">Home</Link></li>
+    <li><Link to="/movies">Movies</Link></li> 
+    <li><Link to="/series">TV Shows</Link></li>
+    <li><Link to="/anime">Anime</Link></li>
+    <li><Link to="/mylist">My List</Link></li>
+    <li><Link to="/disclaimer">Disclaimer</Link></li>
   </ul>
 </div>
 
 <ul className="hidden md:flex md:flex-row gap-4">
-   <li className="flex font-bold"><MdMovieFilter />Movies App</li>
-    <li><a href='#'>Home</a></li>
-    <li><a href="#">Movies</a></li>
-    <li><a href="#">TV Shows</a></li>
-    <li><a href="#">Anime</a></li>
-    <li><a href="#">My List</a></li>
-    <li><a href="#">Disclaimer</a></li>
+   <li className="flex font-bold"><MdMovieFilter />Movie App</li>
+    <li><Link to="/">Home</Link></li>
+    <li><Link to="/movies">Movies</Link></li> 
+    <li><Link to="/series">TV Shows</Link></li>
+    <li><Link to="/animes">Anime</Link></li>
+    <li><Link to="/mylist">My List</Link></li>
+    <li><Link to="/disclaimer">Disclaimer</Link></li>
 </ul>
       
       

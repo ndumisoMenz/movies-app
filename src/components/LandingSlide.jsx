@@ -33,22 +33,11 @@ const LandingSlide = ({movies}) => {
 
     const isInList=myList.some((m)=>m.id===currentMovie.id)
 
-    // const imageUrl = currentMovie.backdrop_path
-    // ? `${IMAGE_BASE_URL}${currentMovie.backdrop_path}`
-    // : "https://via.placeholder.com/800x450?text=No+Image";
-
 
   return (
 
 <div
   className=" flex items-end w-full h-full relative transition-all duration-700 z-0">
-  {/* style={{
-    backgroundImage: `url(${imageUrl})`,
-    backgroundSize: "cover",     
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-  }}
-> */}
 <img
     src={imageUrl}
     alt={currentMovie.title}
@@ -85,16 +74,6 @@ const LandingSlide = ({movies}) => {
         <button className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium px-5 py-2 rounded-lg">
           ▶ Play
         </button>
-        {/* <button className="flex items-center gap-1 px-4 py-2 border rounded-lg hover:bg-gray-100"
-          onClick={()=>isInList? removeFromList(currentMovie.id):addToList({
-            id:currentMovie.id,
-            title:currentMovie.title,
-            poster:imageUrl,
-            year:currentMovie.release_date?.split("-")[0],
-          })}
-        >
-         {isInList? "📎 remove":"➕ Add to List"} 
-        </button> */}
         <AddToListButton item={currentMovie}/>
       </div>
     </div>

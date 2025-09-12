@@ -15,7 +15,7 @@ const GENRES=[
         { id: 10402, name: "Music" },
     ]
 
-const Movies = ({allMovies}) => {
+const Movies = ({allMovies,theme}) => {
     const[selectdGenre,setSelectedGenre]=useState("")
     const[filteredMovies,setFilteredMovies]=useState(allMovies)
 
@@ -55,7 +55,9 @@ const Movies = ({allMovies}) => {
     <div className="p-6">
         <h1 className="text-3xl font-bold text-center mb-6">Movies</h1>
         <div className="flex justify-center mb-6">
-            <select className="w-32 md:w-64 h-10 rounded-lg border-2 border-gray-400" 
+            <select className={`w-32 md:w-64 h-10 rounded-lg border-2 border-gray-400 ${theme === "dark" 
+            ? "bg-black text-white border-gray-600" 
+            : "bg-white text-black border-gray-400"}`}
             value={selectdGenre} onChange={(e)=>setSelectedGenre(e.target.value)}>
 
                 <option value="" disabled hidden>Select Genre</option>
@@ -85,25 +87,6 @@ const Movies = ({allMovies}) => {
         ))}
 
     </div>
-
-    {/* <div className="flex justify-center w-screen h-auto">
-      <select className="w-32 md:w-64 h-10 rounded-lg border-2 border-gray-400">
-        <option value="" disabled selected hidden>Select Genre</option>
-        <option value="action">Action</option>
-        <option value="adventure">Adventure</option>
-        <option value="animation">Animation</option>
-        <option value="comedy">Comedy</option>
-        <option value="crime">Crime</option>
-        <option value="documentary">Documentary</option>
-        <option value="drama">Drama</option>
-        <option value="family">Family</option>
-        <option value="fantasy">Fantasy</option>
-        <option value="history">History</option>
-        <option value="horror">Horror</option>
-        <option value="music">Music</option>
-        
-      </select>
-    </div> */}
     </>
   )
 }
