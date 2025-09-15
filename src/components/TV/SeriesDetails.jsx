@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import AddToListButton from "./AddToListButton";
+import AddToListButton from "../GeneralComponents/AddToListButton";
 
 const API_KEY = import.meta.env.VITE_TMDB_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";

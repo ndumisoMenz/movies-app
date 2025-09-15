@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { ListContext } from "../context/ListContext"
+import { ListContext } from "../../context/ListContext"
 
 const IMG_BASE_URL = "https://image.tmdb.org/t/p/w500";
 

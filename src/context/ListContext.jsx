@@ -19,17 +19,6 @@ export const ListProvider = ({ children }) => {
     localStorage.setItem("myList", JSON.stringify(myList));
   }, [myList]);
 
-  // const addToList = (item) => {
-  //   setMyList((prev) => {
-  //     if (prev.find((m) => m.id === movie.id)) return prev; // prevent duplicates
-  //     return [...prev, movie];
-  //   });
-  // };
-
-  // const removeFromList = (id) => {
-  //   setMyList((prev) => prev.filter((movie) => movie.id !== id));
-  // };
-
   const addToList = (item) => {
   setMyList((prev) => {
     if (prev.find((m) => m.id === item.id)) return prev; // prevent duplicates

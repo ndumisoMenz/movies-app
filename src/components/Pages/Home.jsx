@@ -1,8 +1,8 @@
 import LandingSlide from "./LandingSlide"
-import Navigation from "./Navigation"
-import ListGrid from "./ListGrid"
-import Mylist from "./Mylist"
-import Movies from "./Movies";
+import Navigation from "../GeneralComponents/Navigation"
+import ListGrid from "../GeneralComponents/ListGrid"
+import Mylist from "../GeneralComponents/Mylist"
+import Movies from "../Movie/Movies";
 
 const Home = ({allMovies,movies,trending,topRated,seriesPopular,seriesTrending,seriesTopRated,theme,setTheme}) => {
   return (

@@ -1,8 +1,8 @@
 import { useState,useEffect, useContext } from "react"
 import { IoMdStar } from "react-icons/io";
 import { CiCalendarDate } from "react-icons/ci";
-import { ListContext } from "../context/ListContext";
-import AddToListButton from "./AddToListButton";
+import { ListContext } from "../../context/ListContext";
+import AddToListButton from "../GeneralComponents/AddToListButton";
 import { useNavigate } from "react-router-dom";
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w780";

@@ -1,15 +1,15 @@
 import { BrowserRouter as Router,Routes,Route } from "react-router-dom";
-import Home from "./components/Home"
-import Mylist from "./components/Mylist";
-import Search from "./components/Search"
+import Home from "./components/Pages/Home"
+import Mylist from "./components/GeneralComponents/Mylist";
+import Search from "./components/GeneralComponents/Search"
 import React, { useState, useEffect } from "react";
 import {ListProvider} from "./context/ListContext";
-import MovieDetails from "./components/MovieDetails";
-import SeriesDetails from "./components/SeriesDetails";
-import Movies from "./components/Movies";
-import Series from "./components/Series";
-import Animes from "./components/Animes";
-import Navigation from "./components/Navigation";
+import MovieDetails from "./components/Movie/MovieDetails";
+import SeriesDetails from "./components/TV/SeriesDetails";
+import Movies from "./components/Movie/Movies";
+import Series from "./components/TV/Series";
+import Animes from "./components/TV/Animes";
+import Navigation from "./components/GeneralComponents/Navigation";
 
 
 
@@ -240,3 +240,6 @@ async function fetchAllAnimes(totalPages = 10) {
 }
 
 export default App
+
+
+
