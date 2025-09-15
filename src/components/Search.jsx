@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import { FiSearch, FiPlay, FiTv } from "react-icons/fi";
 import { MdOutlineClose } from "react-icons/md";
 import { FaMagic } from "react-icons/fa";
@@ -13,6 +13,7 @@ const Search = () => {
   const [isOpen, setIsOpen] = useState(false);
   const[query,setQuery]=useState("")
   const[results,setResults]=useState([])
+  const inputRef = useRef(null)
 
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => {
@@ -20,6 +21,12 @@ const Search = () => {
     setQuery("")
     setResults([])
   }
+
+  useEffect(() => {
+    if (isOpen && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isOpen]);
 
   useEffect(()=>{
     const fetchData=async()=>{
@@ -43,20 +50,9 @@ const Search = () => {
     return ()=>clearTimeout(delayDebounce);
   },[query])
 
-  // const handleResultClick=(item)=>{
-  //   if(item.media_type==="movie"){
-  //     window.location.href=`/movie/${item.id}`
-  //   }
-  //   else if(item.media_type==="tv"){
-  //     window.location.href=`/tv/${item.id}`
-  //   }
-  //   else{
-  //     window.location.href=`/person/${item.id}`
-  //   }
-  //   handleClose();
     const handleResultClick = (item) => {
     if (item.media_type === "movie") navigate(`/movie/${item.id}`);
-    else if (item.media_type === "tv") navigate(`/tv/${item.id}`);
+    else if (item.media_type === "tv") navigate(`/series/${item.id}`);
     else navigate(`/person/${item.id}`);
     handleClose();
 
@@ -82,6 +78,7 @@ const Search = () => {
             <div className="flex justify-between items-center mb-2">
               <FiSearch className="mx-1 text-white" />
               <input
+                ref={inputRef}
                 className="w-full mx-1 bg-transparent text-white focus:outline-none"
                 placeholder="Type a Command or Search"
                 value={query}
