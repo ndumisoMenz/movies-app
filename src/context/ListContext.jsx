@@ -19,16 +19,28 @@ export const ListProvider = ({ children }) => {
     localStorage.setItem("myList", JSON.stringify(myList));
   }, [myList]);
 
-  const addToList = (item) => {
-    setMyList((prev) => {
-      if (prev.find((m) => m.id === movie.id)) return prev; // prevent duplicates
-      return [...prev, movie];
-    });
-  };
+  // const addToList = (item) => {
+  //   setMyList((prev) => {
+  //     if (prev.find((m) => m.id === movie.id)) return prev; // prevent duplicates
+  //     return [...prev, movie];
+  //   });
+  // };
 
-  const removeFromList = (id) => {
-    setMyList((prev) => prev.filter((movie) => movie.id !== id));
-  };
+  // const removeFromList = (id) => {
+  //   setMyList((prev) => prev.filter((movie) => movie.id !== id));
+  // };
+
+  const addToList = (item) => {
+  setMyList((prev) => {
+    if (prev.find((m) => m.id === item.id)) return prev; // prevent duplicates
+    return [...prev, item];
+  });
+};
+
+const removeFromList = (id) => {
+  setMyList((prev) => prev.filter((m) => m.id !== id));
+};
+
 
   return (
     <ListContext.Provider value={{ myList, addToList, removeFromList }}>

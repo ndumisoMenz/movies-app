@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const GENRES = [
   { id: 1, name: "Action & Adventure", tmdbIds: [16, 28, 12] },
@@ -14,6 +15,8 @@ const Animes = ({ allAnimes,theme }) => {
   const [selectedGenre, setSelectedGenre] = useState("");
   const [filteredAnimes, setFilteredAnimes] = useState(allAnimes);
   const [visibleCount, setVisibleCount] = useState(0);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!selectedGenre) {
@@ -75,7 +78,7 @@ const Animes = ({ allAnimes,theme }) => {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
         {filteredAnimes.slice(0, visibleCount).map((anime) => (
-          <div key={anime.id} className="text-center">
+          <div onClick={() => navigate(`/series/${anime.id}`)} key={anime.id} className="text-center cursor-pointer hover:scale-105 transition-transform duration-200">
             <img
               src={`https://image.tmdb.org/t/p/w500${anime.poster_path}`}
               alt={anime.name || anime.title}

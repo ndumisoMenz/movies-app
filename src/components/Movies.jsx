@@ -1,4 +1,5 @@
 import { useState,useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 
 const GENRES=[
         {id:28,name:"Action"},
@@ -18,6 +19,8 @@ const GENRES=[
 const Movies = ({allMovies,theme}) => {
     const[selectdGenre,setSelectedGenre]=useState("")
     const[filteredMovies,setFilteredMovies]=useState(allMovies)
+
+    const navigate = useNavigate();
 
     const[visibleCount,setVisibleCount]=useState(0)
 
@@ -73,7 +76,7 @@ const Movies = ({allMovies,theme}) => {
 
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
         {filteredMovies.slice(0,visibleCount).map((movie)=>(
-            <div key={movie.id} className="text-center">
+            <div onClick={() => navigate(`/movie/${movie.id}`)} key={movie.id} className="text-center cursor-pointer">
                 <img
                     src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                     alt={movie.title}
