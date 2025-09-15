@@ -3,11 +3,13 @@ import { FiSearch, FiPlay, FiTv } from "react-icons/fi";
 import { MdOutlineClose } from "react-icons/md";
 import { FaMagic } from "react-icons/fa";
 import { BiHome } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
 const API_KEY = import.meta.env.VITE_TMDB_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 
 const Search = () => {
+  const navigate = useNavigate(); 
   const [isOpen, setIsOpen] = useState(false);
   const[query,setQuery]=useState("")
   const[results,setResults]=useState([])
@@ -41,17 +43,23 @@ const Search = () => {
     return ()=>clearTimeout(delayDebounce);
   },[query])
 
-  const handleResultClick=(item)=>{
-    if(item.media_type==="movie"){
-      window.location.href=`/movie/${item.id}`
-    }
-    else if(item.media_type==="tv"){
-      window.location.href=`/tv/${item.id}`
-    }
-    else{
-      window.location.href=`/person/${item.id}`
-    }
+  // const handleResultClick=(item)=>{
+  //   if(item.media_type==="movie"){
+  //     window.location.href=`/movie/${item.id}`
+  //   }
+  //   else if(item.media_type==="tv"){
+  //     window.location.href=`/tv/${item.id}`
+  //   }
+  //   else{
+  //     window.location.href=`/person/${item.id}`
+  //   }
+  //   handleClose();
+    const handleResultClick = (item) => {
+    if (item.media_type === "movie") navigate(`/movie/${item.id}`);
+    else if (item.media_type === "tv") navigate(`/tv/${item.id}`);
+    else navigate(`/person/${item.id}`);
     handleClose();
+
   }
 
   return (
