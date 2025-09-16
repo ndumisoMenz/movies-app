@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const IMG_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
-const ListGrid = ({title, movies,type = "movie" }) => {
+const ListGrid = ({title, movies,type = "movie",theme}) => {
   const scrollRef = useRef(null);
 
   const scroll = (direction) => {
@@ -43,7 +43,7 @@ const ListGrid = ({title, movies,type = "movie" }) => {
           <Link key={item.id} to={`/${type}/${item.id}`}>
           <div
             key={item.id}
-            className="flex-shrink-0 w-40 bg-white rounded-xl shadow-md hover:shadow-lg cursor-pointer overflow-hidden"
+            className={`flex-shrink-0 w-40 ${theme === "dark" ? "bg-gray-800" : "bg-white"} rounded-xl shadow-md hover:shadow-lg cursor-pointer overflow-hidden`}
           >
             <img
               src={
@@ -55,7 +55,8 @@ const ListGrid = ({title, movies,type = "movie" }) => {
               className="w-full h-60 object-cover"
             />
             <div className="p-2">
-              <h3 className="font-semibold text-sm truncate">{item.title || item.name}</h3>
+              <h3 className={`font-semibold text-sm truncate ${
+               theme === "dark" ? "text-white" : "text-black"}`}>{item.title || item.name}</h3>
               <p className="text-gray-500 text-xs">
                 {/* Movie • {movie.release_date ? item.release_date.slice(0, 4) : "N/A"} */}
                 {type === "movie"

@@ -1,5 +1,4 @@
 import LandingSlide from "./LandingSlide"
-import Navigation from "../GeneralComponents/Navigation"
 import ListGrid from "../GeneralComponents/ListGrid"
 import Mylist from "../GeneralComponents/Mylist"
 import Movies from "../Movie/Movies";
@@ -10,23 +9,23 @@ const Home = ({allMovies,movies,trending,topRated,seriesPopular,seriesTrending,s
       <LandingSlide movies={movies}/>
 
       <div className="px-6 mt-10">
-        <ListGrid title="Trending Movies" movies={trending} type="movie"  />
+        <ListGrid title="Trending Movies" movies={trending} type="movie" theme={theme} />
       </div>
       <div className="px-6 mt-10">
-        <ListGrid title="Popular Movies" movies={movies} type="movie" />
+        <ListGrid title="Popular Movies" movies={movies} type="movie" theme={theme}/>
       </div>
       <div className="px-6 mt-10">
-        <ListGrid title="Top Rated Movies" movies={topRated} type="movie" />
+        <ListGrid title="Top Rated Movies" movies={topRated} type="movie" theme={theme} />
       </div>
 
       <div className="px-6 mt-10">
-        <ListGrid title="Trending Series" movies={seriesTrending} type="series"  />
+        <ListGrid title="Trending Series" movies={seriesTrending} type="series" theme={theme} />
       </div>
       <div className="px-6 mt-10">
-        <ListGrid title="Popular Series" movies={seriesPopular} type="series"  />
+        <ListGrid title="Popular Series" movies={seriesPopular} type="series" theme={theme}  />
       </div>
       <div className="px-6 mt-10">
-        <ListGrid title="Top Rated Series" movies={seriesTopRated} type="series"  />
+        <ListGrid title="Top Rated Series" movies={seriesTopRated} type="series" theme={theme} />
       </div>
     </div>
   )

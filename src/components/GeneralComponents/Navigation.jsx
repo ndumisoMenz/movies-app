@@ -1,52 +1,117 @@
 import { useEffect, useState } from "react";
-import { FiSun,FiMoon  } from "react-icons/fi";
+import { FiSun, FiMoon } from "react-icons/fi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { MdMovieFilter } from "react-icons/md";
+import { NavLink } from "react-router-dom";
 import Search from "./Search";
-import { Link } from "react-router-dom";
 
-const Navigation = ({theme,setTheme}) => {
+const NAV_LINKS = [
+  { to: "/", label: "Home" },
+  { to: "/movies", label: "Movies" },
+  { to: "/series", label: "TV Shows" },
+  { to: "/animes", label: "Anime" },
+  { to: "/mylist", label: "My List" },
+  { to: "/disclaimer", label: "Disclaimer" },
+];
+
+const ThemeToggle = ({ theme, onToggle }) => (
+  <div onClick={onToggle} className="cursor-pointer">
+    {theme === "dark" ? (
+      <FiSun className="w-7 h-7 text-yellow-400" />
+    ) : (
+      <FiMoon className="w-7 h-7 text-gray-800" />
+    )}
+  </div>
+);
+
+const MobileMenu = ({ isOpen, setIsOpen, theme }) => (
+  <div
+    className={`fixed top-0 left-0 h-full w-80 z-50 transform transition-transform duration-300 md:hidden 
+      ${isOpen ? "translate-x-0" : "-translate-x-full"} 
+      ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"}`}
+  >
+    <div className="flex items-center justify-between p-4">
+      <h4 className="flex items-center gap-2 text-lg font-bold">
+        <MdMovieFilter /> Movie App
+      </h4>
+      <IoCloseCircleOutline
+        onClick={() => setIsOpen(false)}
+        className="w-6 h-6 cursor-pointer"
+      />
+    </div>
+
+    <ul className="flex flex-col gap-4 p-4">
+      {NAV_LINKS.map((link) => (
+        <li key={link.to}>
+          <NavLink to={link.to} onClick={() => setIsOpen(false)} className={({ isActive }) =>
+              isActive ? "underline font-semibold" : ""}>
+            {link.label}
+          </NavLink>
+        </li>
+      ))}
+    </ul>
+  </div>
+);
+
+const DesktopMenu = () => (
+  <ul className="hidden md:flex md:flex-row gap-4 items-center">
+    <li className="flex font-bold items-center gap-2">
+      <MdMovieFilter /> Movie App
+    </li>
+    {NAV_LINKS.map((link) => (
+      <li
+        key={link.to}>
+       <NavLink to={link.to}className={({ isActive }) =>
+            `px-2 py-1 rounded-md hover:bg-stone-300 dark:hover:bg-stone-700 ${
+              isActive ? "underline underline-offset-4 font-semibold" : ""
+            }`
+          }>
+            {link.label}
+        </NavLink>
+      </li>
+    ))}
+  </ul>
+);
+
+const Navigation = ({ theme, setTheme }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const[toggleTheme,setToggleTheme]=useState(false)
-  const[navcolor,setnavColor]=useState('bg-transparent');
+  const [navColor, setNavColor] = useState("bg-transparent");
 
-  useEffect(()=>{
-    const savedTheme=localStorage.getItem("theme")
-    if(savedTheme){
-      setTheme(savedTheme)
-      setToggleTheme(savedTheme==="dark")
-    }
-  },[theme])
+ 
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) setTheme(savedTheme);
+  }, [setTheme]);
 
-  const handleToggle=()=>{
-    const newTheme=theme==="light"? "dark":"light";
-    setTheme(newTheme)
-    setToggleTheme(newTheme==="dark")
-    localStorage.setItem("theme",newTheme)
-    //theme==='light'? setTheme('dark'):setTheme('light')
-  }
+ 
+  const handleThemeToggle = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+  };
 
-  useEffect(()=>{
-    const handleScroll=()=>{
-    const scrollHeight=window.scrollY;
-    if (scrollHeight >= 50) {
-      setnavColor(theme==='light'? 'bg-white':'bg-black');   // or any Tailwind class you want
-    } else {
-      setnavColor("bg-transparent");
-    }
-  }
-  window.addEventListener('scroll',handleScroll)
-
-  return()=> window.removeEventListener('scroll',handleScroll)
-
-  },[window.scrollY])
   
+  useEffect(() => {
+    const handleScroll = () => {
+      setNavColor(
+        window.scrollY >= 50
+          ? theme === "light"
+            ? "bg-white text-black"
+            : "bg-black text-white"
+          : "bg-transparent"
+      );
+    };
 
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [theme]);
 
   return (
-    <nav className={`flex flex-row ${navcolor} justify-center md:justify-between  w-screen fixed z-20 opacity-80 py-4 px-7`}>
-
+    <nav
+      className={`flex flex-row justify-center md:justify-between w-screen fixed z-20 opacity-80 py-4 px-7 ${navColor}`}
+    >
+     
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
@@ -54,54 +119,23 @@ const Navigation = ({theme,setTheme}) => {
         />
       )}
 
-      <div
-  className={`navbar fixed top-0 left-0 h-full w-80 bg-white z-50 transform transition-transform duration-300 md:hidden ${
-    isOpen ? "translate-x-0" : "-translate-x-full"
-  }`}
->
-  <div className="flex items-center justify-center">
-    <h4 className="flex items-center gap-2 text-lg font-bold">
-      <MdMovieFilter />Movie App
-    </h4>
-    <IoCloseCircleOutline
-      onClick={() => setIsOpen(false)}
-      className={`w-6 h-6 cursor-pointer ${isOpen ? "block" : "hidden"}`}
-    />
-  </div>
-
-  <ul className="flex flex-col">
-    <li className="flex font-bold"><MdMovieFilter />Movie App</li>
-    <li><Link to="/">Home</Link></li>
-    <li><Link to="/movies">Movies</Link></li> 
-    <li><Link to="/series">TV Shows</Link></li>
-    <li><Link to="/anime">Anime</Link></li>
-    <li><Link to="/mylist">My List</Link></li>
-    <li><Link to="/disclaimer">Disclaimer</Link></li>
-  </ul>
-</div>
-
-<ul className="hidden md:flex md:flex-row gap-4">
-   <li className="flex font-bold"><MdMovieFilter />Movie App</li>
-    <li><Link to="/">Home</Link></li>
-    <li><Link to="/movies">Movies</Link></li> 
-    <li><Link to="/series">TV Shows</Link></li>
-    <li><Link to="/animes">Anime</Link></li>
-    <li><Link to="/mylist">My List</Link></li>
-    <li><Link to="/disclaimer">Disclaimer</Link></li>
-</ul>
       
-      
-      <GiHamburgerMenu onClick={() => setIsOpen(true)} className="md:hidden w-7 h-7"/>
-      <div className="flex items-center ml-3 w-4/5 md:w-1/5 flex-row gap-2 mt-2">
-          <Search/>
-       
-        {toggleTheme? <FiMoon className="w-7 h-7 text-white" onClick={handleToggle} />:<FiSun className="w-7 h-7 text-black" onClick={handleToggle}/>}
+      <MobileMenu isOpen={isOpen} setIsOpen={setIsOpen} theme={theme} />
+
+     
+      <DesktopMenu />
+
+    
+      <div className="flex items-center gap-3 ml-3">
+        <GiHamburgerMenu
+          onClick={() => setIsOpen(true)}
+          className="md:hidden w-7 h-7 cursor-pointer"
+        />
+        <Search />
+        <ThemeToggle theme={theme} onToggle={handleThemeToggle} />
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navigation
-
-
-
+export default Navigation;

@@ -8,7 +8,7 @@ const IMG_BASE_URL = "https://image.tmdb.org/t/p/original";
 
 
 
-const MovieDetails = () => {
+const MovieDetails = ({theme}) => {
     const{id}=useParams();
     const[movie,setMovie]=useState(null);
     const[credits,setCredits]=useState([])
@@ -49,7 +49,8 @@ const MovieDetails = () => {
         alt={movie.title}
         className="w-full h-[90vh] object-cover" 
         />
-    <div className="w-screen min-h-screen bg-white text-black p-8">
+    <div className={`w-screen min-h-screen p-8 ${
+    theme === "dark" ? "bg-black text-white" : "bg-white text-black"}`}>
 
         <div className="flex flex-col md:flex-row gap-10">
             <img 
@@ -120,24 +121,6 @@ const MovieDetails = () => {
 
         </div>
     
-
-    {/* <div className="absolute bottom-10 left-10 max-w-2xl">
-        <h1 className="text-4xl font-bold">{movie.title}</h1>
-        <p className="mt-4">{movie.overview}</p>
-        <p className="mt-2 text-gray-300">
-            Release Date: {movie.release_date}| Rating: ⭐{movie.vote_average}
-        </p>
-        {
-            trailer &&(<a
-                href={`https://www.youtube.com/watch?v=${trailer.key}`}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-block mt-4 bg-yellow-500 text-black px-4 py-2 rounded-lg font-semibold hover:bg-yellow-400">
-                     ▶ Watch Trailer
-                </a>
-            )
-        }
-    </div> */}
     </div>
     </div>
     </div>

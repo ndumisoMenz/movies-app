@@ -6,7 +6,7 @@ const API_KEY = import.meta.env.VITE_TMDB_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 const IMG_BASE_URL = "https://image.tmdb.org/t/p/original";
 
-const SeriesDetails = () => {
+const SeriesDetails = ({theme}) => {
   const { id } = useParams();
   const [series, setSeries] = useState(null);
   const [credits, setCredits] = useState([]);
@@ -46,7 +46,8 @@ const SeriesDetails = () => {
         className="w-full h-[90vh] object-cover"
       />
 
-      <div className="w-screen min-h-screen bg-white text-black p-8">
+      <div className={`w-screen min-h-screen bg-white text-black p-8 ${
+    theme === "dark" ? "bg-black text-white" : "bg-white text-black"}`}>
         <div className="flex flex-col md:flex-row gap-10">
           <img
             src={
