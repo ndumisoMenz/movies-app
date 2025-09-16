@@ -1,7 +1,7 @@
 import { BrowserRouter as Router,Routes,Route } from "react-router-dom";
 import Home from "./components/Pages/Home"
 import Mylist from "./components/GeneralComponents/Mylist";
-import Search from "./components/GeneralComponents/Search"
+import Search from "./components/Search/Search";
 import React, { useState, useEffect } from "react";
 import {ListProvider} from "./context/ListContext";
 import MovieDetails from "./components/Movie/MovieDetails";

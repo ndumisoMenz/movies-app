@@ -47,12 +47,12 @@ const MovieDetails = ({theme}) => {
         <img 
         src={`${IMG_BASE_URL}${movie.backdrop_path}`}
         alt={movie.title}
-        className="w-full h-[90vh] object-cover" 
+        className="w-full h-[90vh] fit md:object-cover" 
         />
     <div className={`w-screen min-h-screen p-8 ${
     theme === "dark" ? "bg-black text-white" : "bg-white text-black"}`}>
 
-        <div className="flex flex-col md:flex-row gap-10">
+        <div className="flex  flex-col md:flex-row gap-10">
             <img 
                 src={
                     movie.poster_path? `${IMG_BASE_URL}${movie.poster_path}`

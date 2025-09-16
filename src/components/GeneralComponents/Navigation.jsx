@@ -4,7 +4,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { MdMovieFilter } from "react-icons/md";
 import { NavLink } from "react-router-dom";
-import Search from "./Search";
+import Search from "../Search/Search";
 
 const NAV_LINKS = [
   { to: "/", label: "Home" },
@@ -41,11 +41,11 @@ const MobileMenu = ({ isOpen, setIsOpen, theme }) => (
       />
     </div>
 
-    <ul className="flex flex-col gap-4 p-4">
+    <ul>
       {NAV_LINKS.map((link) => (
-        <li key={link.to}>
+        <li key={link.to} className="border-b-2 border-neutral-300 mx-4"> 
           <NavLink to={link.to} onClick={() => setIsOpen(false)} className={({ isActive }) =>
-              isActive ? "underline font-semibold" : ""}>
+              isActive ? "" : ""}>
             {link.label}
           </NavLink>
         </li>
@@ -60,9 +60,9 @@ const DesktopMenu = () => (
       <MdMovieFilter /> Movie App
     </li>
     {NAV_LINKS.map((link) => (
-      <li
+      <li 
         key={link.to}>
-       <NavLink to={link.to}className={({ isActive }) =>
+       <NavLink to={link.to} className={({ isActive }) =>
             `px-2 py-1 rounded-md hover:bg-stone-300 dark:hover:bg-stone-700 ${
               isActive ? "underline underline-offset-4 font-semibold" : ""
             }`
@@ -131,7 +131,7 @@ const Navigation = ({ theme, setTheme }) => {
           onClick={() => setIsOpen(true)}
           className="md:hidden w-7 h-7 cursor-pointer"
         />
-        <Search />
+        <Search theme={theme} />
         <ThemeToggle theme={theme} onToggle={handleThemeToggle} />
       </div>
     </nav>

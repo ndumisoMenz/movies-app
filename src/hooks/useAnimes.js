@@ -1,8 +1,8 @@
-// src/hooks/useAnimes.js
+
 import { useState, useEffect } from "react";
 import { tmdb } from "../api/tmdb";
 
-export function useAnimes() {  // ✅ Named export
+export function useAnimes() {
   const [animes, setAnimes] = useState({ all: [] });
 
   useEffect(() => {
