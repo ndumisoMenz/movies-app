@@ -58,7 +58,7 @@ const ListGrid = ({title, movies,type = "movie",theme}) => {
               <h3 className={`font-semibold text-sm truncate ${
                theme === "dark" ? "text-white" : "text-black"}`}>{item.title || item.name}</h3>
               <p className="text-gray-500 text-xs">
-                {/* Movie • {movie.release_date ? item.release_date.slice(0, 4) : "N/A"} */}
+                
                 {type === "movie"
                     ? `Movie • ${item.release_date ? item.release_date.slice(0, 4) : "N/A"}`
                     : `TV • ${item.first_air_date ? item.first_air_date.slice(0, 4) : "N/A"}`}
@@ -70,7 +70,6 @@ const ListGrid = ({title, movies,type = "movie",theme}) => {
         ))}
       </div>
 
-      {/* Right Button */}
       <button
         onClick={() => scroll("right")}
         className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white p-2 rounded-full shadow-md hover:bg-gray-100"

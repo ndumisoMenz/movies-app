@@ -5,7 +5,7 @@ import Search from "./components/Search/Search";
 import React, { useState, useEffect } from "react";
 import {ListProvider} from "./context/ListContext";
 import MovieDetails from "./components/Movie/MovieDetails";
-import SeriesDetails from "./components/TV/SeriesDetails";
+import SeriesDetails from "./components/SeriesDetails/SeriesDetails";
 import Movies from "./components/Movie/Movies";
 import Series from "./components/TV/Series";
 import Animes from "./components/TV/Animes";
