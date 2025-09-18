@@ -1,15 +1,18 @@
 import { FiPlay, FiTv } from "react-icons/fi";
 import { FaMagic } from "react-icons/fa";
 import { BiHome } from "react-icons/bi";
+import { Link } from "react-router-dom";
 
 const shortcuts = [
-  { icon: <FiPlay className="mx-2" />, label: "Movies" },
-  { icon: <FiTv className="mx-2" />, label: "Series" },
-  { icon: <FaMagic className="mx-2" />, label: "Anime" },
-  { icon: <BiHome className="mx-2" />, label: "Home" },
+  { icon: <FiPlay className="mx-2" />, label: "Movies",link:"/movies" },
+  { icon: <FiTv className="mx-2" />, label: "Series",link:"/series" },
+  { icon: <FaMagic className="mx-2" />, label: "Anime", link:"/animes"},
+  { icon: <BiHome className="mx-2" />, label: "Home",link:"/" },
 ];
 
-const SearchShortcuts = () => {
+
+
+const SearchShortcuts = ({setIsOpen}) => {
   return (
     <div className="flex flex-col mt-2 flex-1">
       <p>Search Movies & Series...</p>
@@ -22,12 +25,14 @@ const SearchShortcuts = () => {
 
       <div className="flex-1 flex flex-col justify-around mt-2">
         {shortcuts.map((s, idx) => (
-          <div
+          <Link
             key={idx}
+            to={s.link}
+            onClick={()=>setIsOpen(false)}
             className="flex items-center cursor-pointer hover:bg-green-600 rounded px-2 py-1"
           >
             {s.icon} {s.label}
-          </div>
+          </Link>
         ))}
       </div>
     </div>

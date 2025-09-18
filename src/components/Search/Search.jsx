@@ -70,7 +70,7 @@ const Search = ({ theme }) => {
               </div>
             )}
 
-            <SearchShortcuts />
+            <SearchShortcuts setIsOpen={setIsOpen} />
           </div>
         </div>
       )}
