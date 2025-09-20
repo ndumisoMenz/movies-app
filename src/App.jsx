@@ -10,6 +10,7 @@ import Movies from "./components/Movie/Movies";
 import Series from "./components/TV/Series";
 import Animes from "./components/TV/Animes";
 import Navigation from "./components/GeneralComponents/Navigation";
+import Disclaimer from "./components/Pages/Disclaimer";
 
 
 import { useMovies } from "./hooks/useMovies";
@@ -60,6 +61,7 @@ function App() {
             <Route path="/series" element={<Series allSeries={series.all} theme={theme} />} />
             <Route path="/animes" element={<Animes allAnimes={animes.all} theme={theme} />} />
             <Route path="/mylist" element={<Mylist theme={theme} />} />
+            <Route path="/disclaimer" element={<Disclaimer   theme={theme}/>} />
 
             
           </Routes>
