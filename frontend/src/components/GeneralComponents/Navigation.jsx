@@ -7,7 +7,7 @@ import { NavLink } from "react-router-dom";
 import Search from "../Search/Search";
 
 const NAV_LINKS = [
-  { to: "/", label: "Home" },
+  { to: "/home", label: "Home" },
   { to: "/movies", label: "Movies" },
   { to: "/series", label: "TV Shows" },
   { to: "/animes", label: "Anime" },
