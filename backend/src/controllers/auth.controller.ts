@@ -27,15 +27,35 @@ export const registerHandler=catchErrors(async(req,res)=>{
     }
 )
 
-export const loginHandler=catchErrors(async(req,res)=>{
-    const request=loginSchema.parse({...req.body,
-        userAgent:req.headers["user-agent"]});
+// export const loginHandler=catchErrors(async(req,res)=>{
+//     const request=loginSchema.parse({...req.body,
+//         userAgent:req.headers["user-agent"]});
 
-    const {
-        accessToken,refreshToken
-    }=await loginUser(request);
+//     const {
+//         accessToken,refreshToken
+//     }=await loginUser(request);
 
-    return setAuthCookies({res,accessToken,refreshToken}).status(OK).json({
-        message:"Login successful"
-    })
-})
+//     return setAuthCookies({res,accessToken,refreshToken}).status(OK).json({
+//         message:"Login successful"
+//     })
+// })
+
+export const loginHandler = catchErrors(async (req, res) => {
+  const request = loginSchema.parse({
+    ...req.body,
+    userAgent: req.headers["user-agent"],
+  });
+
+  const { user, accessToken, refreshToken } = await loginUser(request);
+
+
+  // ✅ Return user and tokens in JSON + set cookies
+  return setAuthCookies({ res, accessToken, refreshToken })
+    .status(OK)
+    .json({
+      user,          // include user
+      accessToken,   // include access token
+      refreshToken,  // include refresh token
+      message: "Login successful",
+    });
+});
