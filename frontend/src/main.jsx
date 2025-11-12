@@ -7,14 +7,17 @@ import {ChakraProvider} from "@chakra-ui/react"
 import queryClient from './config/queryClient.js'
 import theme from './theme/index.js'
 import App from './App.jsx'
+import { ThemeProvider } from './context/ThemeContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ChakraProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
+        <ThemeProvider>
           <App/>
-          <ReactQueryDevtools position='bottom-right' initialIsOpen={false}/>
+        </ThemeProvider>
+        <ReactQueryDevtools position='bottom-right' initialIsOpen={false}/>
        </BrowserRouter>
       </QueryClientProvider>
     </ChakraProvider>

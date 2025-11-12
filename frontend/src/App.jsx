@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
 import Home from "./components/Pages/Home";
@@ -20,7 +20,6 @@ import { useAnimes } from "./hooks/useAnimes";
 import { AuthProvider } from "./context/AuthContext";
 
 function App() {
-  const [theme, setTheme] = useState("light");
   const location = useLocation();
 
   const movies = useMovies();
@@ -30,20 +29,10 @@ function App() {
   const hideNavigation =
     location.pathname === "/login" || location.pathname === "/register";
 
-  useEffect(() => {
-    if (theme === "dark") {
-      document.body.style.backgroundColor = "#000000";
-      document.body.style.color = "white";
-    } else {
-      document.body.style.backgroundColor = "initial";
-      document.body.style.color = "black";
-    }
-  }, [theme]);
-
   return (
     <AuthProvider>
       <ListProvider>
-        {!hideNavigation && <Navigation theme={theme} setTheme={setTheme} />}
+        {!hideNavigation && <Navigation />}
         <div>
           <Routes>
             <Route
@@ -57,54 +46,24 @@ function App() {
                   seriesPopular={series.popular}
                   seriesTrending={series.trending}
                   seriesTopRated={series.topRated}
-                  theme={theme}
                 />
               }
             />
-
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-
             <Route
               path="/movie/:id"
-              element={
-                <MovieDetails
-                  theme={theme}
-                  allMovies={movies.all}
-                  allSeries={series.all}
-                />
-              }
+              element={<MovieDetails allMovies={movies.all} allSeries={series.all} />}
             />
-
             <Route
               path="/series/:id"
-              element={
-                <SeriesDetails
-                  theme={theme}
-                  allMovies={movies.all}
-                  allSeries={series.all}
-                />
-              }
+              element={<SeriesDetails allMovies={movies.all} allSeries={series.all} />}
             />
-
-            <Route
-              path="/movies"
-              element={<Movies allMovies={movies.all} theme={theme} />}
-            />
-
-            <Route
-              path="/series"
-              element={<Series allSeries={series.all} theme={theme} />}
-            />
-
-            <Route
-              path="/animes"
-              element={<Animes allAnimes={animes.all} theme={theme} />}
-            />
-
-            <Route path="/mylist" element={<Mylist theme={theme} />} />
-
-            <Route path="/disclaimer" element={<Disclaimer theme={theme} />} />
+            <Route path="/movies" element={<Movies allMovies={movies.all} />} />
+            <Route path="/series" element={<Series allSeries={series.all} />} />
+            <Route path="/animes" element={<Animes allAnimes={animes.all} />} />
+            <Route path="/mylist" element={<Mylist />} />
+            <Route path="/disclaimer" element={<Disclaimer />} />
           </Routes>
         </div>
       </ListProvider>
@@ -113,6 +72,5 @@ function App() {
 }
 
 export default App;
-
 
 
