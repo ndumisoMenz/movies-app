@@ -19,7 +19,7 @@ const LandingSlide = ({ movies }) => {
   }
 
   const currentMovie = movies[currentIndex];
-  const imageUrl = getImageUrl(currentMovie?.poster_path, "w1280"); // higher resolution
+  const imageUrl = getImageUrl(currentMovie?.poster_path, "w1280");
   const imageOriginalUrl = getImageUrl(currentMovie?.poster_path, "original");
   const isInList = myList.some((m) => m.id === currentMovie?.id);
 
