@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 import Home from "./components/Pages/Home";
 import Mylist from "./components/GeneralComponents/Mylist";
-import Search from "./components/Search/Search";
 import MovieDetails from "./components/Movie/MovieDetails";
 import SeriesDetails from "./components/SeriesDetails/SeriesDetails";
 import Movies from "./components/Movie/Movies";
@@ -18,7 +17,6 @@ import { ListProvider } from "./context/ListContext";
 import { useMovies } from "./hooks/useMovies";
 import { useSeries } from "./hooks/useSeries";
 import { useAnimes } from "./hooks/useAnimes";
-import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 
 function App() {
@@ -29,7 +27,8 @@ function App() {
   const series = useSeries();
   const animes = useAnimes();
 
-  const hideNavigation = location.pathname === "/login" || location.pathname === "/register";
+  const hideNavigation =
+    location.pathname === "/login" || location.pathname === "/register";
 
   useEffect(() => {
     if (theme === "dark") {
@@ -47,71 +46,65 @@ function App() {
         {!hideNavigation && <Navigation theme={theme} setTheme={setTheme} />}
         <div>
           <Routes>
-            <Route path="/" element={<Navigate to="/login" replace />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-
-            {/* Protected routes */}
             <Route
-              path="/home"
+              path="/"
               element={
-                <ProtectedRoute>
-                  <Home
-                    allMovies={movies.all}
-                    movies={movies.popular}
-                    trending={movies.trending}
-                    topRated={movies.topRated}
-                    seriesPopular={series.popular}
-                    seriesTrending={series.trending}
-                    seriesTopRated={series.topRated}
-                    theme={theme}
-                  />
-                </ProtectedRoute>
+                <Home
+                  allMovies={movies.all}
+                  movies={movies.popular}
+                  trending={movies.trending}
+                  topRated={movies.topRated}
+                  seriesPopular={series.popular}
+                  seriesTrending={series.trending}
+                  seriesTopRated={series.topRated}
+                  theme={theme}
+                />
               }
             />
+
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
 
             <Route
               path="/movie/:id"
               element={
-                <ProtectedRoute>
-                  <MovieDetails theme={theme} allMovies={movies.all} allSeries={series.all} />
-                </ProtectedRoute>
+                <MovieDetails
+                  theme={theme}
+                  allMovies={movies.all}
+                  allSeries={series.all}
+                />
               }
             />
 
             <Route
               path="/series/:id"
               element={
-                <ProtectedRoute>
-                  <SeriesDetails theme={theme} allMovies={movies.all} allSeries={series.all} />
-                </ProtectedRoute>
+                <SeriesDetails
+                  theme={theme}
+                  allMovies={movies.all}
+                  allSeries={series.all}
+                />
               }
             />
 
             <Route
               path="/movies"
-              element={<ProtectedRoute><Movies allMovies={movies.all} theme={theme} /></ProtectedRoute>}
+              element={<Movies allMovies={movies.all} theme={theme} />}
             />
 
             <Route
               path="/series"
-              element={<ProtectedRoute><Series allSeries={series.all} theme={theme} /></ProtectedRoute>}
+              element={<Series allSeries={series.all} theme={theme} />}
             />
 
             <Route
               path="/animes"
-              element={<ProtectedRoute><Animes allAnimes={animes.all} theme={theme} /></ProtectedRoute>}
+              element={<Animes allAnimes={animes.all} theme={theme} />}
             />
 
-            <Route
-              path="/mylist"
-              element={<ProtectedRoute><Mylist theme={theme} /></ProtectedRoute>}
-            />
+            <Route path="/mylist" element={<Mylist theme={theme} />} />
 
-            <Route
-              path="/disclaimer"
-              element={<ProtectedRoute><Disclaimer theme={theme} /></ProtectedRoute>}
-            />
+            <Route path="/disclaimer" element={<Disclaimer theme={theme} />} />
           </Routes>
         </div>
       </ListProvider>
@@ -120,5 +113,6 @@ function App() {
 }
 
 export default App;
+
 
 

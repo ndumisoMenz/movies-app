@@ -4,10 +4,10 @@ import { useCarousel } from "../../hooks/useCarousel";
 import MovieMeta from "../Movie/MovieMeta";
 import MovieActions from "../Movie/MovieActions";
 
-const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w780";
+const IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
 
-function getImageUrl(path) {
-  return path ? `${IMAGE_BASE_URL}${path}` : "/placeholder.png";
+function getImageUrl(path, size = "w1280") {
+  return path ? `${IMAGE_BASE_URL}/${size}${path}` : "/placeholder.png";
 }
 
 const LandingSlide = ({ movies }) => {
@@ -19,15 +19,19 @@ const LandingSlide = ({ movies }) => {
   }
 
   const currentMovie = movies[currentIndex];
-  const imageUrl = getImageUrl(currentMovie?.poster_path);
+  const imageUrl = getImageUrl(currentMovie?.poster_path, "w1280"); // higher resolution
+  const imageOriginalUrl = getImageUrl(currentMovie?.poster_path, "original");
   const isInList = myList.some((m) => m.id === currentMovie?.id);
 
   return (
     <div className="flex items-end w-full h-full relative transition-all duration-700 z-0">
       <img
         src={imageUrl}
+        srcSet={`${imageUrl} 1280w, ${imageOriginalUrl} 1920w`}
+        sizes="100vw"
         alt={currentMovie?.title}
-        className="absolute inset-0 w-screen h-full cover -z-10"
+        className="absolute inset-0 w-full h-full object-cover -z-10"
+        loading="lazy"
       />
 
       <div className="w-full md:w-[480px] lg:w-[640px] text-white ml-4 mb-2">

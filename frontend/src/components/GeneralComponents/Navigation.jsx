@@ -5,9 +5,10 @@ import { IoCloseCircleOutline } from "react-icons/io5";
 import { MdMovieFilter } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import Search from "../Search/Search";
+import { useNavigate } from "react-router-dom";
 
 const NAV_LINKS = [
-  { to: "/home", label: "Home" },
+  { to: "/", label: "Home" },
   { to: "/movies", label: "Movies" },
   { to: "/series", label: "TV Shows" },
   { to: "/animes", label: "Anime" },
@@ -77,6 +78,7 @@ const DesktopMenu = () => (
 const Navigation = ({ theme, setTheme }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [navColor, setNavColor] = useState("bg-transparent");
+  const navigate = useNavigate()
 
  
   useEffect(() => {
@@ -131,8 +133,14 @@ const Navigation = ({ theme, setTheme }) => {
           onClick={() => setIsOpen(true)}
           className="md:hidden w-7 h-7 cursor-pointer"
         />
+        
         <Search theme={theme} />
         <ThemeToggle theme={theme} onToggle={handleThemeToggle} />
+        <button 
+        onClick={() => navigate("/login")}
+        className="bg-blue-600 rounded-lg h-10 w-56">
+          Sign In
+        </button>
       </div>
     </nav>
   );
