@@ -7,6 +7,8 @@ import cookieParser from "cookie-parser";
 import errorHandler from "./middleware/errorHandler.js";
 import authRoutes from "./routes/auth.route.js";
 import { OK } from "./constants/http.js";
+import moviesRoutes from "./routes/movies.routes.js";
+
 
 const app = express();
 
@@ -46,6 +48,8 @@ app.get("/", (req, res) => {
 
 // Auth routes
 app.use("/auth", authRoutes);
+app.use("/api/movies", moviesRoutes);
+
 
 // Global error handler
 app.use(errorHandler);

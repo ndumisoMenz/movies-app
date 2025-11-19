@@ -1,38 +1,105 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
 
-const AuthContext = createContext();
+const API = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
+const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [accessToken, setAccessToken] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    const storedUser = localStorage.getItem("user");
-    if (token) setAccessToken(token);
-    if (storedUser) setUser(JSON.parse(storedUser));
+  // ------------------------------------
+  // API wrapper (auto refresh on 401)
+  // ------------------------------------
+  const apiFetch = useCallback(async (url, options = {}) => {
+    let res = await fetch(`${API}${url}`, {
+      ...options,
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        ...(options.headers || {}),
+      },
+    });
+
+    // Try refresh token if access token expired
+    if (res.status === 401) {
+      const refresh = await fetch(`${API}/auth/refresh`, {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (!refresh.ok) {
+        logout(); // Force logout
+        return res;
+      }
+
+      // Retry original request
+      res = await fetch(`${API}${url}`, {
+        ...options,
+        credentials: "include",
+      });
+    }
+
+    return res;
   }, []);
 
-  const login = ({ user, accessToken, refreshToken }) => {
-    setUser(user);
-    setAccessToken(accessToken);
-    localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("refreshToken", refreshToken);
-    localStorage.setItem("user", JSON.stringify(user));
+  // ------------------------------------
+  // Load user on page load
+  // ------------------------------------
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const res = await apiFetch("/auth/me");
+
+        if (res.ok) {
+          const data = await res.json();
+          setUser(data.user);
+        }
+      } catch (err) {
+        console.error("Failed to load /auth/me:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadUser();
+  }, [apiFetch]);
+
+  // ------------------------------------
+  // Login
+  // ------------------------------------
+  const login = async (email, password) => {
+    const res = await apiFetch("/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (!res.ok) return { ok: false };
+
+    const data = await res.json();
+    setUser(data.user); // User info from backend
+    return { ok: true };
   };
 
-  const logout = () => {
+  // ------------------------------------
+  // Logout
+  // ------------------------------------
+  const logout = async () => {
+    await apiFetch("/auth/logout", { method: "POST" });
     setUser(null);
-    setAccessToken(null);
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("user");
   };
-
-  const isAuthenticated = !!accessToken;
 
   return (
-    <AuthContext.Provider value={{ user, accessToken, isAuthenticated, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        isAuthenticated: !!user,
+        login,
+        logout,
+        apiFetch,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

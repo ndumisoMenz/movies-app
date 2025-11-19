@@ -36,6 +36,15 @@ const MovieDetails = () => {
 
   if (!movie) return <p className="text-white">Loading...</p>;
 
+  // Helper functions
+  const getPosterUrl = () => {
+    if (movie.poster_path) return `${IMG_BASE_URL}${movie.poster_path}`;
+    if (movie.backdrop_path) return `${IMG_BASE_URL}${movie.backdrop_path}`;
+    return "/placeholder.png";
+  };
+
+  const getYear = () => (movie.release_date ? movie.release_date.split("-")[0] : "");
+
   return (
     <div>
       <img
@@ -46,7 +55,7 @@ const MovieDetails = () => {
       <div className={`w-screen min-h-screen p-8 ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"}`}>
         <div className="flex flex-col md:flex-row gap-10">
           <img
-            src={movie.poster_path ? `${IMG_BASE_URL}${movie.poster_path}` : "https://via.placeholder.com/500x750?text=No+Image"}
+            src={getPosterUrl()}
             alt={movie.title}
             className="w-72 rounded-xl shadow-lg"
           />
@@ -76,7 +85,17 @@ const MovieDetails = () => {
             </div>
             <p className="mt-6 text-gray-700 leading-relaxed">{movie.overview}</p>
             <div className="mt-6">
-              <AddToListButton item={movie} />
+              {/* Pass item in the shape expected by backend */}
+              <AddToListButton
+                item={{
+                  id: movie.id,
+                  title: movie.title,
+                  poster: getPosterUrl(),
+                  release_date: movie.release_date,
+                  first_air_date: movie.first_air_date,
+                  media_type: "movie",
+                }}
+              />
             </div>
           </div>
         </div>
@@ -102,3 +121,4 @@ const MovieDetails = () => {
 };
 
 export default MovieDetails;
+

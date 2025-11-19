@@ -1,7 +1,7 @@
 import type { CookieOptions,Response } from "express";
 import { fifteenMinutesFromNow, thirtyDaysFromNow } from "./date.js";
 
-const secure=process.env.NODE_ENV !=="development";
+const secure=process.env.NODE_ENV ==="production"; //!=="development"
 
 const defaults:CookieOptions={
     sameSite:"strict",

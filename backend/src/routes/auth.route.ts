@@ -1,11 +1,22 @@
-import {Router} from 'express'
-import { loginHandler, registerHandler } from '../controllers/auth.controller.js';
+import { Router, Response } from "express";
+import { loginHandler, registerHandler } from "../controllers/auth.controller.js";
+import requireUser, { AuthenticatedRequest } from "../middleware/requireUser.js";
 
-const authRoutes=Router();
+const authRoutes = Router();
 
-authRoutes.post("/register",registerHandler)
-authRoutes.post("/login",loginHandler)
+// Register
+authRoutes.post("/register", registerHandler);
 
+// Login
+authRoutes.post("/login", loginHandler);
 
+// 🔥 Authenticated route: return current user
+authRoutes.get(
+  "/me",
+  requireUser,
+  (req: AuthenticatedRequest, res: Response) => {
+    return res.json({ user: req.user });
+  }
+);
 
-export default authRoutes
+export default authRoutes;

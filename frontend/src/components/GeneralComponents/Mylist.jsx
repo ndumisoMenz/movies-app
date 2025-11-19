@@ -1,53 +1,40 @@
-import { useContext } from "react";
-import { ListContext } from "../../context/ListContext";
-import { useTheme } from "../../context/ThemeContext"; // <-- use the hook
+import { useEffect } from "react";
+import { useStore } from "../../store/useStore";
+import { useTheme } from "../../context/ThemeContext";
 
 const IMG_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
-const Mylist = () => {
-  const { myList, removeFromList } = useContext(ListContext);
-  const { theme } = useTheme(); // <-- get theme from context
+const MyList = () => {
+  const { myList, fetchList, removeFromList } = useStore();
+  const { theme } = useTheme();
 
-  const moviesList = myList.filter((item) => item.type === "movie");
-  const seriesList = myList.filter((item) => item.type === "tv");
+  useEffect(() => {
+    fetchList();
+  }, [fetchList]);
+
+  const moviesList = myList.filter((i) => i.type === "movie");
+  const seriesList = myList.filter((i) => i.type === "tv");
+
+  const getPosterUrl = (poster) => {
+    if (!poster) return "/placeholder.png";
+    return poster.startsWith("http") ? poster : `${IMG_BASE_URL}${poster}`;
+  };
 
   return (
-    <div
-      className={`w-screen flex flex-col min-h-screen ${
-        theme === "dark" ? "bg-black text-white" : "bg-white text-black"
-      }`}
-    >
-      <div className="self-center text-center mt-40">
-        <h1 className="text-3xl font-bold">My List - Movies App</h1>
-        <p className={`${theme === "dark" ? "text-gray-300" : "text-gray-500"}`}>
-          CORS-Approved List
-        </p>
-      </div>
+    <div className={`w-screen min-h-screen ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"}`}>
+      <h1 className="text-3xl font-bold text-center mt-10">My List</h1>
 
-      {/* Movies Section */}
-      <h2 className="mt-10 text-2xl font-semibold">Your Movies</h2>
-      {moviesList.length === 0 ? (
-        <p className="mt-5 text-gray-400">No movies in your list yet.</p>
-      ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 mt-5">
+      <h2 className="mt-10 text-2xl font-semibold">Movies</h2>
+      {moviesList.length === 0 ? <p>No movies yet</p> : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">
           {moviesList.map((movie) => (
-            <div
-              key={movie.id}
-              className={`rounded-xl shadow-md overflow-hidden relative ${
-                theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-black"
-              }`}
-            >
-              <img
-                src={movie.poster || `${IMG_BASE_URL}${movie.poster_path}`}
-                alt={movie.title}
-                className="w-full h-72 object-cover"
-              />
-              <div className="p-3">
-                <h3 className="font-bold text-lg">{movie.title}</h3>
-                <p className="text-sm text-gray-500">Movie • {movie.year}</p>
-              </div>
+            <div key={movie.movieId || movie._id} className={`shadow p-2 rounded relative ${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-black"}`}>
+              <img src={getPosterUrl(movie.poster)} className="w-full h-56 object-cover rounded" />
+              <h3 className="font-bold">{movie.movieTitle}</h3>
+              <p>{movie.movieYear}</p>
+
               <button
-                onClick={() => removeFromList(movie.id)}
+                onClick={() => removeFromList(movie.movieId)}
                 className={`absolute top-2 right-2 p-2 rounded-full hover:bg-red-500 ${
                   theme === "dark" ? "bg-gray-800 text-white" : "bg-gray-200 text-black"
                 }`}
@@ -59,30 +46,17 @@ const Mylist = () => {
         </div>
       )}
 
-      {/* Series Section */}
-      <h2 className="mt-10 text-2xl font-semibold">Your Series</h2>
-      {seriesList.length === 0 ? (
-        <p className="mt-5 text-gray-400">No series in your list yet.</p>
-      ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 mt-5">
-          {seriesList.map((series) => (
-            <div
-              key={series.id}
-              className={`rounded-xl shadow-md overflow-hidden relative ${
-                theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-black"
-              }`}
-            >
-              <img
-                src={series.poster || `${IMG_BASE_URL}${series.poster_path}`}
-                alt={series.title}
-                className="w-full h-72 object-cover"
-              />
-              <div className="p-3">
-                <h3 className="font-bold text-lg">{series.title}</h3>
-                <p className="text-sm text-gray-500">TV • {series.year}</p>
-              </div>
+      <h2 className="mt-10 text-2xl font-semibold">Series</h2>
+      {seriesList.length === 0 ? <p>No series yet</p> : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">
+          {seriesList.map((s) => (
+            <div key={s.movieId || s._id} className={`shadow p-2 rounded relative ${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-black"}`}>
+              <img src={getPosterUrl(s.poster)} className="w-full h-56 object-cover rounded" />
+              <h3 className="font-bold">{s.movieTitle}</h3>
+              <p>{s.movieYear}</p>
+
               <button
-                onClick={() => removeFromList(series.id)}
+                onClick={() => removeFromList(s.movieId)}
                 className={`absolute top-2 right-2 p-2 rounded-full hover:bg-red-500 ${
                   theme === "dark" ? "bg-gray-800 text-white" : "bg-gray-200 text-black"
                 }`}
@@ -97,6 +71,5 @@ const Mylist = () => {
   );
 };
 
-export default Mylist;
-
+export default MyList;
 

@@ -3,6 +3,7 @@ import { boolean, string } from "zod";
 import { compareValue, hashValue } from "../utils/bcrypt.js";
 
 export interface UserDocument extends mongoose.Document{
+     _id: mongoose.Types.ObjectId;
     email:string;
     password:string;
     verified:boolean;
@@ -40,6 +41,13 @@ userSchema.pre("save",async function(next){
 userSchema.methods.comparedPassword=async function(val:string){
     return compareValue(val,this.password)
 }
+
+userSchema.virtual("moviesList", {
+  ref: "MoviesList",
+  localField: "_id",
+  foreignField: "user",
+  justOne: false,
+});
 
 userSchema.methods.omitPassword=function(){
     const user=this.toObject();
