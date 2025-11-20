@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useStore } from "../../store/useStore";
+import useStore from "../../store/useStore";
 import { useTheme } from "../../context/ThemeContext";
 
 const IMG_BASE_URL = "https://image.tmdb.org/t/p/w500";
@@ -35,9 +35,7 @@ const MyList = () => {
 
               <button
                 onClick={() => removeFromList(movie.movieId)}
-                className={`absolute top-2 right-2 p-2 rounded-full hover:bg-red-500 ${
-                  theme === "dark" ? "bg-gray-800 text-white" : "bg-gray-200 text-black"
-                }`}
+                className={`absolute top-2 right-2 p-2 rounded-full hover:bg-red-500 ${theme === "dark" ? "bg-gray-800 text-white" : "bg-gray-200 text-black"}`}
               >
                 ✖
               </button>
@@ -57,9 +55,7 @@ const MyList = () => {
 
               <button
                 onClick={() => removeFromList(s.movieId)}
-                className={`absolute top-2 right-2 p-2 rounded-full hover:bg-red-500 ${
-                  theme === "dark" ? "bg-gray-800 text-white" : "bg-gray-200 text-black"
-                }`}
+                className={`absolute top-2 right-2 p-2 rounded-full hover:bg-red-500 ${theme === "dark" ? "bg-gray-800 text-white" : "bg-gray-200 text-black"}`}
               >
                 ✖
               </button>
@@ -72,4 +68,3 @@ const MyList = () => {
 };
 
 export default MyList;
-

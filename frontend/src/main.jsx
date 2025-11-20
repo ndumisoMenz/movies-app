@@ -1,25 +1,56 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import {BrowserRouter} from 'react-router-dom'
-import {ReactQueryDevtools} from "@tanstack/react-query-devtools"
-import {QueryClientProvider} from "@tanstack/react-query"
-import {ChakraProvider} from "@chakra-ui/react"
-import queryClient from './config/queryClient.js'
-import theme from './theme/index.js'
-import App from './App.jsx'
-import { ThemeProvider } from './context/ThemeContext.jsx'
+// import { StrictMode } from 'react'
+// import { createRoot } from 'react-dom/client'
+// import {BrowserRouter} from 'react-router-dom'
+// import {ReactQueryDevtools} from "@tanstack/react-query-devtools"
+// import {QueryClientProvider} from "@tanstack/react-query"
+// import {ChakraProvider} from "@chakra-ui/react"
+// import queryClient from './config/queryClient.js'
+// import theme from './theme/index.js'
+// import App from './App.jsx'
+// import { ThemeProvider } from './context/ThemeContext.jsx'
 
-createRoot(document.getElementById('root')).render(
+// createRoot(document.getElementById('root')).render(
+//   <StrictMode>
+//     <ChakraProvider theme={theme}>
+//       <QueryClientProvider client={queryClient}>
+//         <BrowserRouter>
+//         <ThemeProvider>
+//           <App/>
+//         </ThemeProvider>
+//         <ReactQueryDevtools position='bottom-right' initialIsOpen={false}/>
+//        </BrowserRouter>
+//       </QueryClientProvider>
+//     </ChakraProvider>
+//   </StrictMode>,
+// )
+
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { ChakraProvider } from "@chakra-ui/react";
+
+import queryClient from "./config/queryClient.js";
+import theme from "./theme/index.js";
+import App from "./App.jsx";
+import { ThemeProvider } from "./context/ThemeContext.jsx";
+import { AuthProvider } from "./context/AuthContext.jsx";
+
+createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ChakraProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-        <ThemeProvider>
-          <App/>
-        </ThemeProvider>
-        <ReactQueryDevtools position='bottom-right' initialIsOpen={false}/>
-       </BrowserRouter>
+          <ThemeProvider>
+            {/* ✅ AuthProvider MUST wrap App */}
+            <AuthProvider>
+              <App />
+            </AuthProvider>
+          </ThemeProvider>
+          <ReactQueryDevtools position="bottom-right" initialIsOpen={false} />
+        </BrowserRouter>
       </QueryClientProvider>
     </ChakraProvider>
-  </StrictMode>,
-)
+  </StrictMode>
+);

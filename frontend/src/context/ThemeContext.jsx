@@ -1,28 +1,20 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-// Create context
 const ThemeContext = createContext();
 
-// Provider component
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") || "light";
+  });
 
-  // Load saved theme from localStorage
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) setTheme(savedTheme);
-  }, []);
-
-  // Apply theme to body
   useEffect(() => {
     if (theme === "dark") {
       document.body.style.backgroundColor = "#000000";
       document.body.style.color = "white";
     } else {
-      document.body.style.backgroundColor = "initial";
+      document.body.style.backgroundColor = "#ffffff";
       document.body.style.color = "black";
     }
-
     localStorage.setItem("theme", theme);
   }, [theme]);
 
@@ -35,5 +27,4 @@ export const ThemeProvider = ({ children }) => {
   );
 };
 
-// Custom hook for convenience
 export const useTheme = () => useContext(ThemeContext);

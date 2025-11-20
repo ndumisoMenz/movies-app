@@ -2,25 +2,47 @@ import { create } from "zustand";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
-export const useStore = create((set, get) => ({
-  // ---------- AUTH STATE ----------
+const useStore = create((set, get) => ({
+  // ---------------- AUTH STATE ----------------
   user: null,
+  accessToken: null,
+  refreshToken: null,
   loadingAuth: true,
 
-  setUser: (user) => set({ user }),
-  setLoadingAuth: (loading) => set({ loadingAuth: loading }),
+  // Derived state
+  isAuthenticated: () => !!get().user,
 
-  // API wrapper: auto refresh + send cookies
+  setAuth: ({ user, accessToken, refreshToken }) =>
+    set({ user, accessToken, refreshToken }),
+
+  logout: async () => {
+    await get().apiFetch("/auth/logout", { method: "POST" });
+    set({
+      user: null,
+      accessToken: null,
+      refreshToken: null,
+      myList: [],
+    });
+  },
+
+  // ---------------- API WRAPPER ----------------
   apiFetch: async (url, options = {}) => {
     let res = await fetch(`${API_URL}${url}`, {
       ...options,
       credentials: "include",
-      headers: { "Content-Type": "application/json", ...(options.headers || {}) },
+      headers: {
+        "Content-Type": "application/json",
+        ...(options.headers || {}),
+      },
     });
 
+    // Refresh token on 401
     if (res.status === 401) {
-      // Try refresh token
-      const refresh = await fetch(`${API_URL}/auth/refresh`, { method: "POST", credentials: "include" });
+      const refresh = await fetch(`${API_URL}/auth/refresh`, {
+        method: "POST",
+        credentials: "include",
+      });
+
       if (!refresh.ok) {
         get().logout();
         return res;
@@ -35,24 +57,7 @@ export const useStore = create((set, get) => ({
     return res;
   },
 
-  login: async (email, password) => {
-    const res = await get().apiFetch("/auth/login", {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-    });
-
-    if (!res.ok) return { ok: false };
-
-    const data = await res.json();
-    set({ user: data.user });
-    return { ok: true };
-  },
-
-  logout: async () => {
-    await get().apiFetch("/auth/logout", { method: "POST" });
-    set({ user: null, myList: [] });
-  },
-
+  // ---------------- LOAD USER ON APP START ----------------
   loadUser: async () => {
     set({ loadingAuth: true });
     try {
@@ -62,15 +67,33 @@ export const useStore = create((set, get) => ({
         set({ user: data.user });
       }
     } catch (err) {
-      console.error("Failed to load user:", err);
+      console.error("Failed to load /auth/me:", err);
     } finally {
       set({ loadingAuth: false });
     }
   },
 
-  // ---------- MY LIST STATE ----------
-  myList: [],
+  // ---------------- LOGIN REQUEST ----------------
+  loginRequest: async ({ email, password }) => {
+    const res = await get().apiFetch("/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+    });
 
+    if (!res.ok) throw new Error("Invalid credentials");
+
+    const data = await res.json(); // { user, accessToken, refreshToken }
+    set({
+      user: data.user,
+      accessToken: data.accessToken,
+      refreshToken: data.refreshToken,
+    });
+
+    return data;
+  },
+
+  // ---------------- MY LIST ----------------
+  myList: [],
   setMyList: (list) => set({ myList: list }),
 
   fetchList: async () => {
@@ -82,8 +105,6 @@ export const useStore = create((set, get) => ({
   },
 
   addToList: async (item) => {
-    const movieId = item.movieId.toString();
-
     const res = await get().apiFetch("/api/movies", {
       method: "POST",
       body: JSON.stringify(item),
@@ -96,9 +117,16 @@ export const useStore = create((set, get) => ({
   },
 
   removeFromList: async (movieId) => {
-    const res = await get().apiFetch(`/api/movies/${movieId}`, { method: "DELETE" });
+    const res = await get().apiFetch(`/api/movies/${movieId}`, {
+      method: "DELETE",
+    });
+
     if (res.ok) {
-      set((state) => ({ myList: state.myList.filter((m) => m.movieId !== movieId) }));
+      set((state) => ({
+        myList: state.myList.filter((m) => m.movieId !== movieId),
+      }));
     }
   },
 }));
+
+export default useStore;
