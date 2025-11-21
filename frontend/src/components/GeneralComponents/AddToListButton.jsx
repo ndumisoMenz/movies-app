@@ -1,15 +1,26 @@
 import useStore from "../../store/useStore";
+import toast from "react-hot-toast";
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w780";
 
 const AddToListButton = ({ item }) => {
-  const { myList, addToList, removeFromList } = useStore();
+  const myList = useStore((s) => s.myList);
+  const addToList = useStore((s) => s.addToList);
+  const removeFromList = useStore((s) => s.removeFromList);
+  const isAuthenticated = useStore((s) => s.isAuthenticated()); // ✅ call function
+
   const movieId = item.id.toString();
   const isInList = myList.some((m) => m.movieId === movieId);
 
   const handleClick = () => {
+    if (!isAuthenticated) {
+      toast.error("Please login to add items to your list");
+      return;
+    }
+
     if (isInList) {
       removeFromList(movieId);
+      toast.success("Removed from your list");
     } else {
       addToList({
         movieId,
@@ -18,6 +29,7 @@ const AddToListButton = ({ item }) => {
         poster: item.poster || item.poster_path || item.backdrop_path || "/placeholder.png",
         type: item.media_type || (item.first_air_date ? "tv" : "movie"),
       });
+      toast.success("Added to your list!");
     }
   };
 
@@ -34,3 +46,4 @@ const AddToListButton = ({ item }) => {
 };
 
 export default AddToListButton;
+

@@ -16,7 +16,13 @@ const useStore = create((set, get) => ({
     set({ user, accessToken, refreshToken }),
 
   logout: async () => {
-    await get().apiFetch("/auth/logout", { method: "POST" });
+    try {
+      await get().apiFetch("/auth/logout", { method: "POST" });
+    } catch (err) {
+      console.error("Logout error:", err);
+    }
+
+    // Clear all client state
     set({
       user: null,
       accessToken: null,
@@ -36,7 +42,7 @@ const useStore = create((set, get) => ({
       },
     });
 
-    // Refresh token on 401
+    // Attempt token refresh on 401
     if (res.status === 401) {
       const refresh = await fetch(`${API_URL}/auth/refresh`, {
         method: "POST",
@@ -48,6 +54,7 @@ const useStore = create((set, get) => ({
         return res;
       }
 
+      // Retry original request
       res = await fetch(`${API_URL}${url}`, {
         ...options,
         credentials: "include",
@@ -60,8 +67,10 @@ const useStore = create((set, get) => ({
   // ---------------- LOAD USER ON APP START ----------------
   loadUser: async () => {
     set({ loadingAuth: true });
+
     try {
       const res = await get().apiFetch("/auth/me");
+
       if (res.ok) {
         const data = await res.json();
         set({ user: data.user });
@@ -82,7 +91,7 @@ const useStore = create((set, get) => ({
 
     if (!res.ok) throw new Error("Invalid credentials");
 
-    const data = await res.json(); // { user, accessToken, refreshToken }
+    const data = await res.json(); // includes user + tokens
     set({
       user: data.user,
       accessToken: data.accessToken,
@@ -94,10 +103,12 @@ const useStore = create((set, get) => ({
 
   // ---------------- MY LIST ----------------
   myList: [],
+
   setMyList: (list) => set({ myList: list }),
 
   fetchList: async () => {
     const res = await get().apiFetch("/api/movies");
+
     if (res.ok) {
       const data = await res.json();
       set({ myList: data });
@@ -130,3 +141,4 @@ const useStore = create((set, get) => ({
 }));
 
 export default useStore;
+
