@@ -7,7 +7,7 @@ const AddToListButton = ({ item }) => {
   const myList = useStore((s) => s.myList);
   const addToList = useStore((s) => s.addToList);
   const removeFromList = useStore((s) => s.removeFromList);
-  const isAuthenticated = useStore((s) => s.isAuthenticated()); // ✅ call function
+  const isAuthenticated = useStore((s) => s.isAuthenticated());
 
   const movieId = item.id.toString();
   const isInList = myList.some((m) => m.movieId === movieId);

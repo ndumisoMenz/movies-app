@@ -18,8 +18,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // CORS setup
 const allowedOrigins = [
-  "http://localhost:5173", // Local development
-  "https://movies-4g543b10h-ndumisomenzs-projects.vercel.app", // Deployed frontend
+  "http://localhost:5173",
+  "https://movies-app-two-woad.vercel.app",
+  "https://movies-4g543b10h-ndumisomenzs-projects.vercel.app",
 ];
 
 app.use(
