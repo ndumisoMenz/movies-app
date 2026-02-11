@@ -1,105 +1,134 @@
-import { Box,
-    Container,
-    Flex,
-    FormControl,
-    FormLabel,
-    Heading,
-    Input,
-    Stack,
-    Text,
-    Link as ChakraLink,
-    Button
- } from "@chakra-ui/react";
-import {useState} from 'react'
-import {Link, useNavigate} from "react-router-dom"
+import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { register } from "../lib/api";
 
+const Register = ({ closeModal, openLoginModal }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-const Register = () => {
+  const {
+    mutate: createAccount,
+    isPending,
+    isError,
+    error,
+  } = useMutation({
+    mutationFn: register,
+    onSuccess: () => {
+      // Close modal after successful registration
+      if (closeModal) closeModal();
 
-    const navigate=useNavigate();
-    const [email,setEmail]=useState('')
-    const [password,setPassword]=useState('')
-    const [confirmPassword,setConfirmPassword]=useState('')
+      // Optionally switch to login modal
+      if (openLoginModal) openLoginModal();
+    },
+  });
 
-    const {
-        mutate:createAccount,
-        isPending,
-        isError,
-        error
-    }=useMutation({
-        mutationFn:register,
-        onSuccess:()=>{
-            navigate('/',{
-                replace:true
-            })
-        }
-    })
+  const handleSubmit = () => {
+    createAccount({ email, password, confirmPassword });
+  };
 
   return (
-        <Flex minH="100vh" align="center" justify="center">
-            <Container mx="auto" maxW="md" py={12} px={6} textAlign="center">
-                <Heading fontSize="4xl" mb={8}>
-                    Create an account
-                </Heading>
-                <Box rounded="lg" bg="gray.700" boxShadow="lg" p={8}>
-                    {isError && (
-                        <Box mb={3} color="red.400">
-                            {error?.message || "An error occured"}
-                        </Box>
-                    )}
-                    <Stack spacing={4}>
-                        <FormControl id="email">
-                            <FormLabel>Email address</FormLabel>
-                            <Input type="email" 
-                                autoFocus
-                                value={email}
-                                onChange={(e)=>setEmail(e.target.value)}
-                                />
-                        </FormControl>
-                        <FormControl id="password">
-                            <FormLabel>Password</FormLabel>
-                            <Input type="password" 
-                                autoFocus
-                                value={password}
-                                onChange={(e)=>setPassword(e.target.value)}
-                               
-                             />
-                        </FormControl>
-                        <Text color="text.muted" fontSize="xs" textAlign="left" mt=
-                        {2}>
-                            - Must be atleast 6 characters long.
-                        </Text>
-                        <FormControl id="confirmPassword">
-                            <FormLabel>Confirm Password</FormLabel>
-                            <Input type="password" 
-                                autoFocus
-                                value={confirmPassword}
-                                onChange={(e)=>setConfirmPassword(e.target.value)}
-                                onKeyDown={
-                                    (e)=>e.key==="Enter" && createAccount({email,password,confirmPassword})
-                                }
-                             />
-                        </FormControl>
-                        <Button my={2} isDisabled={!email || password.length<6 || password!==confirmPassword}
-                            isLoading={isPending}
-                            onClick={
-                                ()=>createAccount({email,password,confirmPassword})
-                            }>
-                            Create Account
-                        </Button>
-                        <Text align='center' fontSize='sm' color='text.muted'>
-                            Already have an account?{""}
-                            <ChakraLink as={Link} to="/login">
-                                Sign in
-                            </ChakraLink>
-                        </Text>
-                    </Stack>
-                </Box>
-            </Container>
-        </Flex>
-  )
-}
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="w-full max-w-md bg-gray-800 rounded-2xl shadow-2xl p-10">
+        <h1 className="text-3xl font-bold text-center text-white mb-8">
+          Create an Account
+        </h1>
 
-export default Register
+        {isError && (
+          <div className="mb-4 text-red-400 text-center">
+            {error?.message || "An error occurred"}
+          </div>
+        )}
+
+        <div className="space-y-5">
+          {/* Email */}
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">
+              Email address
+            </label>
+            <input
+              type="email"
+              autoFocus
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          {/* Password */}
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">
+              Password
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <p className="text-xs text-gray-400 mt-1">
+              Must be at least 6 characters long.
+            </p>
+          </div>
+
+          {/* Confirm Password */}
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              onKeyDown={(e) =>
+                e.key === "Enter" && handleSubmit()
+              }
+              className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          {/* Submit Button */}
+          <button
+            onClick={handleSubmit}
+            disabled={
+              !email ||
+              password.length < 6 ||
+              password !== confirmPassword ||
+              isPending
+            }
+            className={`w-full py-3 rounded-lg font-semibold transition
+              ${
+                !email ||
+                password.length < 6 ||
+                password !== confirmPassword ||
+                isPending
+                  ? "bg-blue-400 cursor-not-allowed opacity-60"
+                  : "bg-blue-600 hover:bg-blue-700"
+              }
+              text-white
+            `}
+          >
+            {isPending ? "Creating Account..." : "Create Account"}
+          </button>
+        </div>
+
+        {/* Switch to Login */}
+        <p className="mt-6 text-center text-gray-400 text-sm">
+          Already have an account?{" "}
+          <button
+            onClick={() => {
+              if (closeModal) closeModal();
+              if (openLoginModal) openLoginModal();
+            }}
+            className="text-blue-500 hover:underline font-medium"
+          >
+            Sign in
+          </button>
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default Register;
+

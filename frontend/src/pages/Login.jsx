@@ -1,26 +1,8 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import useStore from "../store/useStore";
-import { useNavigate, Link } from "react-router-dom";
 
-import {
-  Box,
-  Flex,
-  Container,
-  Stack,
-  FormControl,
-  FormLabel,
-  Input,
-  Button,
-  Heading,
-  Text,
-  Link as ChakraLink,
-} from "@chakra-ui/react";
-
-const Login = () => {
-  const navigate = useNavigate();
-
-  // Zustand actions
+const Login = ({ closeModal, openRegisterModal }) => {
   const loginRequest = useStore((state) => state.loginRequest);
   const setAuth = useStore((state) => state.setAuth);
 
@@ -28,84 +10,70 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const { mutate: signIn, isPending, isError } = useMutation({
-    mutationFn: loginRequest, // calls backend /auth/login
-
+    mutationFn: loginRequest,
     onSuccess: (data) => {
-      // Backend returns: { user, accessToken, refreshToken, message }
       setAuth({
         user: data.user,
         accessToken: data.accessToken,
         refreshToken: data.refreshToken,
       });
 
-      navigate("/mylist", { replace: true });
-    },
-
-    onError: (err) => {
-      console.error("Login error:", err);
+      if (closeModal) closeModal();
     },
   });
 
-  const handleSubmit = () => signIn({ email, password });
-
   return (
-    <Flex minH="100vh" align="center" justify="center" bg="gray.900" color="white">
-      <Container maxW="md" py={12} px={6}>
-        <Heading mb={8} textAlign="center">
-          Sign Into Your Account
-        </Heading>
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="max-w-md w-full bg-gray-800 rounded-2xl shadow-2xl p-10">
+        <h1 className="text-3xl font-bold text-center text-white mb-8">
+          Welcome Back
+        </h1>
 
-        <Box rounded="lg" bg="gray.700" p={8} shadow="lg">
-          {isError && (
-            <Box mb={3} color="red.300" textAlign="center">
-              Invalid email or password
-            </Box>
-          )}
+        {isError && (
+          <div className="mb-4 text-red-400 text-center">
+            Invalid email or password
+          </div>
+        )}
 
-          <Stack spacing={4}>
-            <FormControl>
-              <FormLabel>Email address</FormLabel>
-              <Input
-                type="email"
-                value={email}
-                bg="gray.800"
-                borderColor="gray.600"
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </FormControl>
+        <div className="space-y-6">
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-            <FormControl>
-              <FormLabel>Password</FormLabel>
-              <Input
-                type="password"
-                value={password}
-                bg="gray.800"
-                borderColor="gray.600"
-                onChange={(e) => setPassword(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-              />
-            </FormControl>
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-            <Button
-              colorScheme="blue"
-              isDisabled={!email || password.length < 6}
-              isLoading={isPending}
-              onClick={handleSubmit}
-            >
-              Sign In
-            </Button>
+          <button
+            onClick={() => signIn({ email, password })}
+            className="w-full py-3 rounded-lg bg-blue-600 text-white font-semibold"
+          >
+            {isPending ? "Signing In..." : "Sign In"}
+          </button>
+        </div>
 
-            <Text align="center" fontSize="sm">
-              Don&apos;t have an account?{" "}
-              <ChakraLink as={Link} to="/register" color="blue.300">
-                Sign up
-              </ChakraLink>
-            </Text>
-          </Stack>
-        </Box>
-      </Container>
-    </Flex>
+        <p className="mt-6 text-center text-gray-400 text-sm">
+          Don’t have an account?{" "}
+          <button
+            onClick={openRegisterModal}
+            className="text-blue-500 hover:underline"
+          >
+            Register
+          </button>
+        </p>
+      </div>
+    </div>
   );
 };
 
 export default Login;
+
+

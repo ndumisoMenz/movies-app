@@ -33,7 +33,7 @@ function App() {
   const isAuthenticated = useStore((s) => s.isAuthenticated());
 
   useEffect(() => {
-    loadUser(); // load user on app start
+    loadUser(); 
   }, []);
 
   return (
