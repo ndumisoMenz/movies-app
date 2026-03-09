@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FiSun, FiMoon } from "react-icons/fi";
+import { FiSun, FiMoon, FiLogIn, FiLogOut } from "react-icons/fi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { MdMovieFilter } from "react-icons/md";
@@ -181,9 +181,11 @@ const Navigation = () => {
           {!user ? (
             <button
               onClick={openLoginModal}
-              className="bg-blue-600 rounded-lg h-10 md:h-12 w-28 md:w-56 text-sm md:text-lg font-semibold shadow-lg hover:bg-blue-700 transition flex items-center justify-center"
+              className={`flex items-center justify-center rounded-lg transition h-10 md:h-12 w-12 md:w-56 text-sm md:text-lg font-semibold hover:bg-gray-600 bg-transparent md:bg-blue-600 md:shadow-lg md:hover:bg-blue-700 ${theme === "dark" ? "text-white" : "text-black md:text-white"
+                }`}
             >
-              Sign In
+              <span className="hidden md:inline">Sign In</span>
+              <FiLogIn className="md:hidden w-6 h-6" />
             </button>
           ) : (
             <button
@@ -192,9 +194,11 @@ const Navigation = () => {
                 navigate("/");
                 toast.success("Logged out successfully 👋");
               }}
-              className="bg-red-600 rounded-lg h-10 md:h-12 w-28 md:w-56 text-sm md:text-lg font-semibold shadow-lg hover:bg-red-700 transition flex items-center justify-center"
+              className={`flex items-center justify-center rounded-lg transition h-10 md:h-12 w-12 md:w-56 text-sm md:text-lg font-semibold hover:bg-gray-600 bg-transparent md:bg-red-600 md:shadow-lg md:hover:bg-red-700 ${theme === "dark" ? "text-white" : "text-black md:text-white"
+                }`}
             >
-              Logout
+              <span className="hidden md:inline">Logout</span>
+              <FiLogOut className="md:hidden w-6 h-6" />
             </button>
           )}
         </div>
