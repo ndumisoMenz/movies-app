@@ -24,8 +24,8 @@ const LandingSlide = ({ movies }) => {
     return <p className="text-white text-center">Loading movie...</p>;
   }
 
-  const imageUrl = getImageUrl(currentMovie.poster_path, "w1280");
-  const imageOriginalUrl = getImageUrl(currentMovie.poster_path, "original");
+  const imageUrl = getImageUrl(currentMovie.backdrop_path, "w1280");
+  const imageOriginalUrl = getImageUrl(currentMovie.backdrop_path, "original");
   const isInList = myList.some((m) => m.id === currentMovie.id);
 
   return (

@@ -96,7 +96,7 @@ const Navigation = () => {
       <nav
         className={`fixed top-0 left-0 w-screen z-50 py-4 px-7 flex justify-between items-center transition-colors duration-300 ${navBg}`}
       >
-        
+
         {isOpen && (
           <div
             className="fixed inset-0 bg-black/40 z-40"
@@ -104,12 +104,11 @@ const Navigation = () => {
           />
         )}
 
-        
+
         <ul className="hidden md:flex md:flex-row gap-4 items-center">
           <li
-            className={`flex font-bold items-center gap-2 ${
-              theme === "dark" ? "text-white" : "text-black"
-            }`}
+            className={`flex font-bold items-center gap-2 ${theme === "dark" ? "text-white" : "text-black"
+              }`}
           >
             <MdMovieFilter /> Movie App
           </li>
@@ -120,8 +119,7 @@ const Navigation = () => {
                 to={link.to}
                 onClick={(e) => handleProtectedRoute(e, link.to)}
                 className={({ isActive }) =>
-                  `px-2 py-1 rounded-md hover:bg-stone-300 dark:hover:bg-stone-700 ${
-                    theme === "dark" ? "text-white" : "text-black"
+                  `px-2 py-1 rounded-md hover:bg-stone-300 dark:hover:bg-stone-700 ${theme === "dark" ? "text-white" : "text-black"
                   } ${isActive ? "underline underline-offset-4 font-semibold" : ""}`
                 }
               >
@@ -131,14 +129,51 @@ const Navigation = () => {
           ))}
         </ul>
 
-        
+
         <div className="flex items-center gap-4">
           <GiHamburgerMenu
             onClick={() => setIsOpen(true)}
-            className={`md:hidden w-7 h-7 cursor-pointer ${
-              theme === "dark" ? "text-white" : "text-black"
-            }`}
+            className={`md:hidden w-7 h-7 cursor-pointer ${theme === "dark" ? "text-white" : "text-black"
+              }`}
           />
+
+          {/* 📱 Mobile Menu Sidebar */}
+          <div
+            className={`fixed top-0 left-0 h-full w-64 z-50 transform transition-transform duration-300 ${isOpen ? "translate-x-0" : "-translate-x-full"
+              } ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"} shadow-2xl md:hidden`}
+          >
+            <div className="flex flex-col h-full p-6">
+              <div className="flex justify-between items-center mb-8">
+                <span className="text-xl font-bold flex items-center gap-2">
+                  <MdMovieFilter /> Movie App
+                </span>
+                <IoCloseCircleOutline
+                  className="w-8 h-8 cursor-pointer hover:text-red-500 transition"
+                  onClick={() => setIsOpen(false)}
+                />
+              </div>
+
+              <ul className="flex flex-col gap-6">
+                {NAV_LINKS.map((link) => (
+                  <li key={link.to}>
+                    <NavLink
+                      to={link.to}
+                      onClick={(e) => {
+                        handleProtectedRoute(e, link.to);
+                        setIsOpen(false);
+                      }}
+                      className={({ isActive }) =>
+                        `text-lg font-medium transition-colors hover:text-blue-500 ${isActive ? "text-blue-600 font-bold" : ""
+                        }`
+                      }
+                    >
+                      {link.label}
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
 
           <Search />
           <ThemeToggle />
@@ -146,7 +181,7 @@ const Navigation = () => {
           {!user ? (
             <button
               onClick={openLoginModal}
-              className="bg-blue-600 rounded-lg h-12 w-56 text-lg font-semibold shadow-lg hover:bg-blue-700 transition"
+              className="bg-blue-600 rounded-lg h-10 md:h-12 w-28 md:w-56 text-sm md:text-lg font-semibold shadow-lg hover:bg-blue-700 transition flex items-center justify-center"
             >
               Sign In
             </button>
@@ -157,7 +192,7 @@ const Navigation = () => {
                 navigate("/");
                 toast.success("Logged out successfully 👋");
               }}
-              className="bg-red-600 rounded-lg h-12 w-56 text-lg font-semibold shadow-lg hover:bg-red-700 transition"
+              className="bg-red-600 rounded-lg h-10 md:h-12 w-28 md:w-56 text-sm md:text-lg font-semibold shadow-lg hover:bg-red-700 transition flex items-center justify-center"
             >
               Logout
             </button>

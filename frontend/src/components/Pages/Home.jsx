@@ -15,9 +15,13 @@ const Home = ({
   const { theme } = useTheme();
 
   return (
-    <div className="w-screen h-[80vh] lg:h-[70vh] -mt-4">
-      <LandingSlide movies={movies} />
+    <div className="w-full">
+      {/* Hero Section */}
+      <div className="w-full h-[60vh] md:h-[70vh] lg:h-[85vh] -mt-4 overflow-hidden relative">
+        <LandingSlide movies={movies} />
+      </div>
 
+      {/* Grid Content */}
       <div className="px-6 mt-10">
         <ListGrid title="Trending Movies" movies={trending} type="movie" theme={theme} />
       </div>
@@ -34,7 +38,7 @@ const Home = ({
       <div className="px-6 mt-10">
         <ListGrid title="Popular Series" movies={seriesPopular} type="series" theme={theme} />
       </div>
-      <div className="px-6 mt-10">
+      <div className="px-6 mt-10 pb-10">
         <ListGrid title="Top Rated Series" movies={seriesTopRated} type="series" theme={theme} />
       </div>
     </div>
